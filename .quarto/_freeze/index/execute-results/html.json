@@ -1,0 +1,14 @@
+{
+  "hash": "4c43028fd8c28e7ba87ff80dc8af13a2",
+  "result": {
+    "markdown": "---\ntitle: \"Keeping it Tidy\"\nsubtitle: \"*Using the Tidyverse to Organize, Transform, and Visualize Data*<br>Workshop hosted by Meghan Hall, through R-Ladies Paris<br>September 8, 2022 | 1pm EST / 7pm CEST\"\n---\n\n\n<a href=\"https://www.meetup.com/rladies-paris/events/287856868/\" class=\"btn btn-primary\">**Register now**</a> <a href=\"https://meghan.rbind.io/talk/rladiesparis/\" class=\"btn btn-primary\">**Workshop slides**</a>\n\n## About the Workshop\n\nThis 90-minute workshop is targeted toward beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.\n\nThe event is free and will be held virtually over Zoom, though registration is required!\n\n### Technical Details\n\nYou are free to \"code along\" throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won't be time for individual troubleshooting. \n\nIf you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with `install.packages(\"tidyverse\")`.\n\n## Why the Tidyverse\n\nWorkshop outline, code, and details will appear closer to the workshop date :)\n\n\n::: {.cell}\n\n```{.r .cell-code  code-line-numbers=\"1-6|2|5|6\"}\ngender_plot +\n  mypackage::theme_brown()\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

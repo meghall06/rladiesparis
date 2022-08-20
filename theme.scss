@@ -1,0 +1,47 @@
+@import"https://fonts.googleapis.com/css?family=Montserrat:700";
+@import"https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic";
+
+/*-- scss:defaults --*/
+
+$primary-color: #C5ACAA;
+$body-bg: #C5ACAA;
+$body-color: #37392E;
+$link-color: #ffffff;
+$navbar-bg: #6A395B;
+$navbar-font-family: "Montserrat";
+$headings-font-family: "Montserrat";
+$font-family-base: "Open Sans";
+$code-color: $navbar-bg;
+$code-bg: #ded5d7;
+$code-border-radius: 25px; 
+
+/*-- scss:rules --*/
+
+.navbar-title {
+  font-family: $headings-font-family;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #6A395B;
+  border: 1px solid transparent;
+  width: 25%;
+  margin-bottom: 0;
+  text-align: center;
+  padding: 0px 2px;
+  border-radius: 25px;
+  vertical-align: middle;
+}
+
+.btn-primary:hover {
+  color: #ffffff;
+  background-color: #978e83;
+  border-color: white;
+}
+
+.btn-primary:focus {
+  color: #ffffff;
+  background-color: #978e83;
+  border-color: white;
+}
+
