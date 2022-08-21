@@ -7,31 +7,24 @@
     "text": "Register now Workshop slides"
   },
   {
+    "objectID": "index.html#about-the-workshop",
+    "href": "index.html#about-the-workshop",
+    "title": "Keeping it Tidy",
+    "section": "About the Workshop",
+    "text": "About the Workshop\nThis 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.\nThe event is free and will be held virtually over Zoom, though registration is required!\n\n\nTechnical Details\nYou are free to “code along” throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won’t be time for individual troubleshooting.\nIf you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with install.packages(\"tidyverse\")."
+  },
+  {
+    "objectID": "index.html#workshop-data",
+    "href": "index.html#workshop-data",
+    "title": "Keeping it Tidy",
+    "section": "Workshop Data",
+    "text": "Workshop Data\nWorkshop outline, code, and details will appear closer to the workshop date :)"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
     "text": "1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "index.html#about-the-workshop",
-    "href": "index.html#about-the-workshop",
-    "title": "Keeping it Tidy",
-    "section": "About the Workshop",
-    "text": "About the Workshop\nThis 90-minute workshop is targeted toward beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.\nThe event is free and will be held virtually over Zoom, though registration is required!\n\nTechnical Details\nYou are free to “code along” throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won’t be time for individual troubleshooting.\nIf you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with install.packages(\"tidyverse\")."
-  },
-  {
-    "objectID": "index.html#test",
-    "href": "index.html#test",
-    "title": "Keeping it Tidy",
-    "section": "Test",
-    "text": "Test\nfds"
-  },
-  {
-    "objectID": "index.html#why-the-tidyverse",
-    "href": "index.html#why-the-tidyverse",
-    "title": "Keeping it Tidy",
-    "section": "Why the Tidyverse",
-    "text": "Why the Tidyverse\nWorkshop outline, code, and details will appear closer to the workshop date :)\n\ngender_plot +\n  mypackage::theme_brown()"
   }
 ]

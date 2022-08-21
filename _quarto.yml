@@ -2,9 +2,16 @@ project:
   type: website
 
 website:
+  site-url: "https://meghan.quarto.pub/keeping-it-tidy/"
   title: "Keeping it Tidy"
   search: false
+  favicon: logo.png
+  twitter-card:
+    creator: "@meghanmhall"
+    image: "https://meghan.quarto.pub/keeping-it-tidy/logo.png"
   navbar:
+    title: false
+    logo: logo2.png
     right:
       - icon: twitter
         href: https://twitter.com/meghanmhall

@@ -7,9 +7,11 @@ subtitle: "*Using the Tidyverse to Organize, Transform, and Visualize Data*<br>W
 
 ## About the Workshop
 
-This 90-minute workshop is targeted toward beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
+This 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
 
 The event is free and will be held virtually over Zoom, though registration is required!
+
+![](images/image.png)
 
 ### Technical Details
 
@@ -17,13 +19,6 @@ You are free to "code along" throughout the workshop, using the details in the s
 
 If you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with `install.packages("tidyverse")`.
 
-## Why the Tidyverse
+## Workshop Data
 
 Workshop outline, code, and details will appear closer to the workshop date :)
-
-```{r}
-#| eval: false
-#| code-line-numbers: "1-6|2|5|6"
-gender_plot +
-  mypackage::theme_brown()
-```
