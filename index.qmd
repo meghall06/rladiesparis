@@ -15,10 +15,10 @@ The event is free and will be held virtually over Zoom, though registration is r
 
 ### Technical Details
 
-You are free to "code along" throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won't be time for individual troubleshooting. 
+You are free to "code along" throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won't be time for individual troubleshooting.
 
 If you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with `install.packages("tidyverse")`.
 
 ## Workshop Data
 
-Workshop outline, code, and details will appear closer to the workshop date :)
+Workshop outline, code, and details will appear closer to the workshop date. :)
