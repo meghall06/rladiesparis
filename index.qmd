@@ -1,9 +1,12 @@
 ---
 title: "Keeping it Tidy"
 subtitle: "*Using the Tidyverse to Organize, Transform, and Visualize Data*<br>Workshop hosted by Meghan Hall, through R-Ladies Paris<br>September 8, 2022 | 1pm EST / 7pm CEST"
+from: markdown+emoji
+execute:
+  warning: false
 ---
 
-<a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary">**Register now**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Workshop slides**</a>
+<a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary">**Register now**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Workshop slides**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Code file**</a>
 
 ## About the Workshop
 
@@ -19,6 +22,806 @@ You are free to "code along" throughout the workshop, using the details in the s
 
 If you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with `install.packages("tidyverse")`.
 
-## Workshop Data
+### Website materials
 
-Workshop outline, code, and details will appear closer to the workshop date. :)
+The materials on this website are designed as a companion for the live workshop, not as a comprehensive guide to the entire tidyverse. All the code is here, along with some background on the concepts discussed, but the details are more fleshed out in the workshop itself. The workshop slides are linked above.
+
+The code is interspersed throughout, but the full `code.R` file is available at the link above.
+
+## R and the `tidyverse`
+
+R is an open-source (that means free!) scripting language for working with data. It helps make your analysis wonderfully efficient and :sparkles: reproducible :sparkles:, and I would highly recommend it over something like Excel for anything beyond data analysis, especially if you expect to repeat that analysis ever again (which you probably will). 
+
+Having a) your data separate from your analysis and b) that analysis codified in a script will help tremendously with reproducibility efforts. That makes it easier for anyone else (including yourself in three months once you have forgotten all the details you swore you'd remember) to rerun your code and make edits, deal with updated data, etc.
+
+### Getting started
+
+You need the R [language](https://cloud.r-project.org/), as well as a place to actually run that R code. I highly recommend [RStudio](https://www.rstudio.com/products/rstudio/download/#download). Both are free to download. There are some basic installation instructions [here](https://stat545.com/install.html).
+
+You use R via *packages*, which hold *functions*, which are just *verbs*. `filter` is an example of a function. The functions we'll see today take the syntax `function(argument)`. Many functions can take multiple arguments, which are separated by a comma.
+
+(You can also write your own functions, but that is beyond the scope of this workshop. See more [here](https://r4ds.had.co.nz/functions.html).)
+
+### Why the tidyverse?
+
+The tidyverse is an opinionated set of packages that work together and are designed for common data science tasks. (By *opinionated*, I mean that the packages have some thoughts on how your data should be structured. We'll discuss the concept of **tidy data** later on in this workshop.) The packages are well-maintained and beginner-friendly, plus they cover almost all of what any beginner and/or intermediate user needs in order to get started doing some data analysis.
+
+You install packages with the command `install.packages("tidyverse")` (need to do once per R installation on your computer) and then load them with the command `library(tidyverse)` (need to do every session; it is convention to put all of the necessary packages at the top of your coding script).
+
+Since the tidyverse is actually a set of packages, the `library(tidyverse)` command loads nine of them---the eight listed below, in addition to `lubridate`, which is useful for working with dates (I clearly need to update my packages before I take screenshots!).
+
+![](images/packages2.png)
+
+We'll be focusing on the three packages highlighted above, though there are several more packages within the tidyverse family (shown below). You would need to install and load any of those separately.
+
+![](images/packages3.png)
+
+#### Common `dplyr` verbs
+
+`dplyr` is perhaps the most useful tidyverse package, just due to how often you'll use its common functions for data manipulation.
+
+- `filter()` keeps or discards rows (aka observations)
+- `select()` keeps or discards columns (aka variables)
+- `arrange()` sorts data set by certain variable(s)
+- `count()` tallies data set by certain variable(s)
+- `mutate()` creates new variables
+- `summarize()` aggregates data
+
+Both `mutate()` and `summarize()` can be further modified by the addition of the `group_by()` function to specify grouping variables. We'll see examples of all of these during this workshop.
+
+#### Common operators
+
+`<-` is the assignment operator, used for assigning objects like data frames (how data sets are commonly stored in R). I like to think of `<-`, which can be added with the shortcut `option -` in RStudio, as "save as."
+
+`|>` is the *pipe*, used to chain together multiple lines of code. It automatically sends the output of one line into the input of the next line and makes it much easier to read and write code. The keyboard shortcut is `cmd shift m`.
+
+You might also be familiar with `%>%`, which is the original pipe that was native to the tidyverse. The new pipe `|>` works in base R and is therefore a bit more versatile, but for the purposes of this workshop feel free to use either! I am trying to get familiar with using `|>` instead of `%>%`, so that's what you'll see here.
+
+## Workshop data
+
+The data we're using for today's workshop comes from [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly social data data project based on the tidyverse ecosystem. The GitHub repo hosts many interesting data sets to practice with, and [this particular data set](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md) comes from the American Kennel Club.
+
+`read_csv()` from the `readr` package (loaded as part of the tidyverse!) imports data of multiple file formats, and the two data sets for this workshop can be read in directly from this website's GitHub repo.
+
+```{r readr}
+#| output: false
+library(tidyverse)
+breed_rank <- read_csv("https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_rank.csv")
+breed_traits <- read_csv("https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_traits.csv")
+```
+
+The first data set, `breed_rank`, lists the popularity rankings over time for 195 different dog breeds (many of the snippets shown throughout are truncated for the purposes of display).
+
+::: {style="text-align: center"}
+`breed_rank`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r breed-rank-kable}
+#| echo: false
+knitr::kable(breed_rank |> head(4)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+The second data set, `breed_traits`, has information on 16 different traits, classified from 1 to 5, for those 195 dog breeds.
+
+::: {style="text-align: center"}
+`breed_traits`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r breed-traits-kable}
+#| echo: false
+knitr::kable(breed_traits |> head(4) |> select(1:5)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+For today's workshop, since we'll be learning about tidy data, we'll investigate some very **un**tidy dogs. To do so, we'll be specifically focusing on three of these trait variables: shedding level, coat grooming frequency, and drooling level.
+
+## Basic data cleaning
+
+Per the [tidyverse style guide](https://style.tidyverse.org/syntax.html), variable names should use snake case---lower case with underscores between words. This helps with consistency and readability, but it's also technically easier, as any variable names that start with numbers and/or have spaces need to be referred to within `` `back ticks` ``. It's easier to refer to a variable with `shedding_level` instead of `` `Shedding Level` ``, and thankfully we have a function to easily rename all of those variables instead of doing it by hand.
+
+Unfortunately...that function does not live within the tidyverse! It's the only such function we'll be highlighting during this workshop, but it is so helpful that it has to be included.
+
+In the code below, after we've loaded the [janitor](https://cran.r-project.org/web/packages/janitor/vignettes/janitor.html) package, the first line uses the assignment operator `<-` to "save as" our `breed_traits` data set. We could give it another name and save it as something else, but for this purpose we're going to overwrite it. The second line applies the `clean_names()` function.
+
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+A helpful tip on notation: once a package has been loaded with `library`, you can use the function by itself, like you see here with `clean_names()` and above with `read_csv()`. If you don't want to load the package, you can eliminate that line and instead refer to the function along with its package name, such as `janitor::clean_names()`. (The package still has to be installed, however.)
+:::
+
+```{r janitor}
+library(janitor)
+
+breed_traits <- breed_traits |> 
+  clean_names()
+```
+
+The `clean_names()` function neatly converts all variable names to snake case, as shown below.
+
+::: {style="font-size: 0.75em"}
+```{r janitor-kable}
+#| echo: false
+knitr::kable(breed_traits |> head(2) |> select(1:3)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+### `count()`
+
+If you want to *look* at your data, use `View(breed_traits)` and it will pop up in RStudio in a spreadsheet-like format. But there are ways to programatically look at your data, as well, and one of the most useful functions for doing so is `count()`. It allows you to count the unique values of a variable (or multiple). 
+
+Note that this piece of code does not have an assignment operator! We are applying the `count()` function to the `breed_traits` data set, but the results would appear in your console and would not be saved anywhere. This is useful whenever you don't need to save the output.
+
+```{r count-1}
+#| eval: false
+breed_traits |> 
+  count(shedding_level)
+```
+
+This output tallies up our data by the `shedding_level` variable. 109 breeds have a value of 3, 41 breeds have a value of 2, etc. Unfortunately, we have a value of zero, and we know that these variables should have a value of 1, 2, 3, 4, or 5. This is likely an error in the data that should be removed.
+
+::: {style="font-size: 0.75em"}
+```{r count-1-kable}
+#| echo: false
+knitr::kable(breed_traits |> count(shedding_level)) |>
+  kableExtra::row_spec(1, bold = T, color = "#6A395B", background = "#F8F2F3") |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+### `filter()`
+
+To investigate this further, we can use the `filter()` function, which keeps or discards observations (rows). Here, the function argument says that we want to keep all records with a `shedding_level` value of zero (and we know from our `count()` output above that there should be only one such observation). I'm also adding the `select()` function (which keeps or discards columns) to keep only our columns of interest.
+
+You can see how, thanks to the pipe `|>`, we start with our `breed_traits` data set, apply the `filter()` function with that input, apply the `select()` function to the given output, and then the results would be shown in the console.
+
+```{r filter-1}
+#| eval: false
+breed_traits |> 
+  filter(shedding_level == 0) |> 
+  select(breed, shedding_level, coat_grooming_frequency, 
+         drooling_level)
+```
+
+There is in fact only one observation matching this criteria---it looks like something is wrong with the record on Plott Hounds, so we should remove them from our data set (even though [they're quite cute](https://www.google.com/search?q=plott+hound&rlz=1C5GCEM_enUS1004US1004&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi-vqSXsIH6AhVRrYkEHVlDD1EQ_AUoAXoECAIQAw&biw=1440&bih=712&dpr=2)).
+
+::: {style="font-size: 0.75em"}
+```{r filter-1-kable}
+#| echo: false
+knitr::kable(breed_traits |> 
+  filter(shedding_level == 0) |> 
+  select(breed, shedding_level, coat_grooming_frequency, drooling_level)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+We can use the `filter()` function once again to make this change. You'll notice in the code below that the assignment operator is back, which means we're making changes to our data set. We'll overwrite the `breed_traits` data frame once again and apply a `filter()` function to keep only the records in which `shedding_level` does *not* equal zero (i.e., all but the Plott Hounds observation). The `!=` operator means *not equal to*.
+
+```{r filter-2}
+breed_traits <- breed_traits |> 
+  filter(shedding_level != 0)
+```
+
+If you were to once again run `breed_traits |> count(shedding_level)`, you'd see that zero is no longer a value of that variable.
+
+### `mutate()`
+
+I mentioned earlier that the focus of our analysis will be **un**tidy dogs and that we'll be focusing on three of the traits. Since those traits are classified from 1 to 5 for each breed, with a higher score denoting a higher level of untidiness, we can add up the scores for all three traits to create a new variable.
+
+The code below uses the assignment operator `<-` again, but this time we're starting with the `breed_traits` data frame and creating a *new* data frame called `untidy_scores`. The `mutate()` function creates this new variable, `untidy_score`, that adds up our three traits of interest, and the `select()` function keeps only two columns from our original data set.
+
+```{r mutate-1}
+untidy_scores <- breed_traits |> 
+  mutate(untidy_score = shedding_level + 
+           coat_grooming_frequency + drooling_level) |> 
+  select(breed, untidy_score)
+```
+
+Our entire data set now consists of the `untidy_score` for 194 breeds (we had 195 until we dropped the Plott Hounds).
+
+::: {style="font-size: 0.75em"}
+```{r mutate-1-kable}
+#| echo: false
+knitr::kable(untidy_scores |> head(5)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+### `arrange()`
+
+The `arrange()` function can be useful to quickly sort your data set based on the value of any selected variable(s). `arrange()` defaults to ascending order, as you can see in the code and output on the left, but you can specify descending order by wrapping the variable name within `desc()`, as seen in the code on the right.
+
+::: columns
+::: {.column width="50%"}
+
+```{r arrange-1}
+#| eval: false
+untidy_scores |> 
+  arrange(untidy_score)
+```
+
+::: {style="font-size: 0.75em"}
+::: {style="text-align: center"}
+```{r arrange-1-kable}
+#| echo: false
+knitr::kable(untidy_scores |> arrange(untidy_score) |> head(6)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+:::
+:::
+
+::: {.column width="50%"}
+```{r arrange-2}
+#| eval: false
+untidy_scores |> 
+  arrange(desc(untidy_score))
+```
+
+::: {style="font-size: 0.75em; text-align: center"}
+```{r arrange-2-kable}
+#| echo: false
+knitr::kable(untidy_scores |> arrange(desc(untidy_score)) |> head(6)) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+:::
+:::
+
+## Bar chart
+
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+For all of the plots in this workshop, I have included code for the most basic, out-of-the-box version as well as code to make a more custom plot (toggle to the custom tab to see it). The former can be useful whenever you're a) learning and/or b) visualizing data for personal data exploration purposes, but if you're looking to present your plots in any way, you'll likely want to make some customizations. Thankfully, `ggplot` makes that possible! I use a special theme for the custom plots, the code for which is available below.
+:::
+
+```{r theme}
+#| code-fold: true
+#| code-summary: "bonus: custom ggplot theme"
+#| output: false
+library(showtext) # helps with custom fonts
+font_add_google("Prompt", "prompt") # load preferred Google fonts
+showtext_auto()
+
+theme_tidy_dog <- function () { 
+  theme_linedraw(base_size=13, base_family="prompt") %+replace% 
+    theme(
+      # justify axis titles
+      axis.title = element_text(hjust = 0),
+      # backgrounds to match website
+      panel.background = element_rect(fill='#F9E0D9', color = NA),
+      plot.background = element_rect(fill='#F9E0D9', color=NA),
+      legend.background = element_rect(fill="transparent", color=NA),
+      legend.key = element_rect(fill="transparent", color=NA),
+      # I hate axis ticks and lines :shrug:
+      axis.ticks = element_blank(),
+      panel.grid.major = element_line(color = "grey90", size = 0.3), 
+      panel.grid.minor = element_blank(),
+      # make tweaks to the title and subtitle
+      plot.title = element_text(size = 15, hjust = 0, vjust = 0.5, face = "bold", 
+                                margin = margin(b = 0.2, unit = "cm")),
+      plot.subtitle = element_text(size = 10, hjust = 0, vjust = 0.5, 
+                                   margin = margin(b = 0.2, unit = "cm")),
+    )
+}
+
+```
+
+Our previous output showed the six untidiest dogs, along with their untidy score. Let's make a simple bar chart to visualize that data. Our `untidy_scores` data set we created previously has all 194 breeds, but for this purpose we want to create a new data set, `untidy_dogs`, with only the six highest scores.
+
+The `slice_max` function is quite handy for filtering and keeping only the highest values of a certain variable. This function has multiple arguments: the first specifies the variable to filter on (`untidy_score`), the second specifies the number of observations we want to keep, and the third clarifies our stance on ties (here we'll just ignore them).
+
+```{r untidy-dogs}
+untidy_dogs <- untidy_scores |> 
+  slice_max(untidy_score, n = 6, with_ties = FALSE)
+```
+
+We are left with only six observations in this data set, which we can use to make our bar chart.
+
+::: {style="font-size: 0.75em"}
+```{r untidy-dogs-kable}
+#| echo: false
+knitr::kable(untidy_dogs) |> kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+`ggplot2` is the tidyverse package used for making plots---**gg** stands for the grammar of graphics. The base function is `ggplot()`, and there are many ([many, many](https://ggplot2.tidyverse.org/reference/index.html)) associated functions to help construct and customize your plots. 
+
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+When you're working with `ggplot` and its related functions, you need to pipe lines together with `+` instead of `|>`. Sometimes you will forget (I still do, and I've been using `ggplot` for years :shrug:), but the error message you get is helpful.
+:::
+
+The code for the bar chart below starts with the name of our data frame: `untidy_dogs`. The `ggplot` function starts things off by mapping elements to our **aes**thetic attributes. Here we just have `x` and `y`, but you'll see more later. We only have two variables in this data set, so `untidy_score` will go on the x-axis and `breed` will go on the y. 
+
+We specify the **geom**etric points with the following line: `geom_bar()` signifies a bar chart. The `stat = "identity"` argument is necessary here to communicate that we want the bar lengths to be determined by the variable that we specified. (The standard bar chart just takes a raw count of your data.)
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r bar-basic}
+#| fig-height: 4
+#| fig-align: center
+untidy_dogs |> 
+  ggplot(aes(x = untidy_score, y = breed)) +
+  geom_bar(stat = "identity")
+```
+
+### Custom
+
+```{r bar-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+untidy_dogs |> 
+  # can reorder the breeds based on the untidy score
+  ggplot(aes(x = untidy_score, y = reorder(breed, untidy_score), 
+             label = untidy_score)) +
+  # fill colors the bars
+  geom_bar(stat = "identity", fill = "#6A395B") +
+  # add the data labels
+  geom_label(family = "prompt") +
+  # ensure the bars go all the way to the axis line
+  scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(title = "The untidiest dogs",
+       subtitle = "Based on drooling, shedding, and grooming frequency",
+       x = "Untidiness score", y = NULL) +
+  theme_tidy_dog()
+```
+
+:::
+
+## Tidy data
+
+From the work we've done so far, we know that Bernese Mountain Dogs are among the untidiest of all: they have the highest score of 11. So far we've mostly been working with the `breed_traits` data, but we have a whole other data set, `breed_ranks`. Can we look at how the popularity ranking of Bernese Mountain Dogs has shifted over time?
+
+::: {style="font-size: 0.75em"}
+```{r bernese-kable-1}
+#| echo: false
+knitr::kable(breed_rank |> filter(str_detect(Breed, "Bernese"))) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+I am imagining some kind of dot plot, with the year on the x-axis and the ranking on the y-axis. That seems easy enough based on the data that we have above, but if you were to start constructing that plot, you'd pretty quickly run into a road block. What would your first function look like? `ggplot(aes(x = ??, y = ??))`
+
+We discussed earlier that the tidyverse is opinionated on the topic of **tidy data**, and this particular question is tricky because this data set does not meet the criteria for tidy data:
+
+>There are three interrelated rules which make a dataset tidy:<br>
+1. Each variable must have its own column.<br>
+2. Each observation must have its own row.<br>
+3. Each value must have its own cell.<br>
+- [**R for Data Science**](https://r4ds.had.co.nz/tidy-data.html)
+
+### `pivot_longer()`
+
+Thankfully, the tidyverse gives us a handy solution from the `tidyr` package.
+
+```{r pivot-longer}
+ranks_pivoted <- breed_rank |> 
+  pivot_longer(`2013 Rank`:`2020 Rank`,
+               names_to = "year",
+               values_to = "rank")
+```
+
+::: {style="font-size: 0.75em"}
+```{r bernese-kable-3}
+#| echo: false
+knitr::kable(ranks_pivoted |> filter(str_detect(Breed, "Bernese"))) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+```{r pivot-longer-2}
+ranks_pivoted <- ranks_pivoted |> 
+  rename(breed = Breed) |> 
+  mutate(year = parse_number(year))
+```
+
+::: {style="font-size: 0.75em"}
+```{r pivot-longer-2-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> filter(str_detect(breed, "Bernese"))) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+## Dot plot
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r dot-basic}
+#| fig-height: 3.5
+#| fig-align: center
+ranks_pivoted |> 
+  filter(str_detect(breed, "Bernese")) |> 
+  ggplot(aes(x = year, y = rank, label = rank)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 2)
+```
+
+### Custom
+
+```{r dot-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+ranks_pivoted |> 
+  filter(str_detect(breed, "Bernese")) |> 
+  ggplot(aes(x = year, y = rank, label = rank)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 2) +
+  scale_y_reverse(limits = c(50, 1)) +
+  scale_x_continuous(breaks = seq(2013, 2020, 1)) +
+  labs(x = NULL, y = "Popularity Rank",
+       title = "Popularity of Bernese Mountain Dogs") +
+  theme_tidy_dog()
+```
+
+:::
+
+## Line graph
+
+can we plot the popularity ranking of the untidiest dogs?
+
+::: columns
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`untidy_dogs`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r untidy-dogs-kable}
+#| echo: false
+```
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`ranks_pivoted`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r ranks-pivoted-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> head(6)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+:::
+:::
+
+```{r line-graph}
+untidy_popularity <- ranks_pivoted |> 
+  filter(breed %in% untidy_dogs$breed)
+```
+
+check that this filtered the way we wanted it to!
+
+```{r count-check}
+#| eval: false
+untidy_popularity |> 
+  count(breed)
+```
+
+::: {style="font-size: 0.75em"}
+```{r count-check-kable}
+#| echo: false
+knitr::kable(untidy_popularity |> count(breed)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r line-basic}
+#| fig-height: 4
+#| fig-align: center
+untidy_popularity |> 
+  ggplot(aes(x = year, y = rank, group = breed, color = breed)) +
+  geom_line() +
+  geom_point(size = 3)
+```
+
+### Custom
+
+```{r line-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+untidy_popularity |> 
+  mutate(label = ifelse(year == 2020, breed, NA)) |> 
+  ggplot(aes(x = year, y = rank, group = breed, color = breed,
+             label = label)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text(hjust = -0.1, family = "prompt") +
+  scale_color_viridis_d(option = "A") +
+  scale_x_continuous(expand = expansion(mult = c(0.025, 0.5)),
+                     breaks = seq(2013, 2020, 1)) +
+  scale_y_reverse() +
+  labs(title = "Popularity over time of the untidiest dogs",
+       subtitle = "Based on drooling, shedding, and grooming frequency",
+       x = NULL,
+       y = "Popularity Rank") +
+  theme_tidy_dog() +
+  theme(legend.position = "none")
+```
+
+:::
+
+## Relational data
+
+can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+
+```{r summ-1}
+avg_ranks <- ranks_pivoted |> 
+  group_by(breed) |> 
+  summarize(avg_rank = mean(rank))
+```
+
+::: {style="font-size: 0.75em"}
+```{r summ-1-kable}
+#| echo: false
+knitr::kable(avg_ranks |> head(9)) |> kableExtra::row_spec(9, bold = T, color = "#6A395B", background = "#F8F2F3") |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+```{r summ-2}
+avg_ranks <- ranks_pivoted |> 
+  group_by(breed) |> 
+  summarize(avg_rank = mean(rank, na.rm = TRUE))
+```
+
+::: {style="font-size: 0.75em"}
+```{r summ-1-kable}
+#| echo: false
+```
+:::
+
+can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+
+::: columns
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`avg_ranks`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r avg-ranks-kable}
+#| echo: false
+knitr::kable(avg_ranks |> head(5)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`untidy_scores`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r untidy_scores-kable}
+#| echo: false
+knitr::kable(untidy_scores |> head(5)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+:::
+:::
+
+other join types are available, but `left_join()` is the most common (more info in [**R4DS**](https://r4ds.had.co.nz/relational-data.html))
+
+```{r left-join-1}
+tidy_and_rank <- avg_ranks |> 
+  left_join(untidy_scores, by = "breed")
+```
+
+can specify **keys** with `by = "var"` 
+
+- multiple: `by = c("var1","var2")`
+
+- different names: `by = c("var_left" = "var_right")`
+
+::: {style="font-size: 0.75em"}
+```{r tidy-and-rank-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> head(2)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+check that this worked the way we wanted it to!
+
+```{r count-check-2}
+#| eval: false
+tidy_and_rank |> 
+  count(untidy_score)
+```
+
+::: {style="font-size: 0.75em"}
+```{r count-check-2-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> 
+  count(untidy_score))|> kableExtra::row_spec(10, bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+```{r na-1}
+#| eval: false
+tidy_and_rank |> 
+  filter(is.na(untidy_score))
+```
+
+::: {style="font-size: 0.75em"}
+```{r na-1-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> 
+  filter(is.na(untidy_score))) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+```{r na-2}
+tidy_and_rank <- tidy_and_rank |> 
+  filter(!is.na(untidy_score))
+```
+
+::: {style="font-size: 0.75em"}
+```{r na-2-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> count(untidy_score)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+## Jitter plot
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r jitter-basic}
+#| fig-height: 4
+#| fig-align: center
+tidy_and_rank |> 
+  ggplot(aes(x = untidy_score, y = avg_rank)) +
+  geom_jitter(width = 0.1)
+```
+
+### Custom
+
+```{r jitter-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+tidy_and_rank |>  
+  ggplot(aes(x = untidy_score, y = avg_rank)) +
+  scale_x_continuous(breaks = seq(3, 11, 1)) +
+  geom_jitter(size = 3, width = 0.1, alpha = 0.7, color = "#6A395B") +
+  scale_y_reverse(breaks = c(200, 150, 100, 50, 1)) +
+  labs(title = "Dog breed popularity compared to their untidiness score",
+       subtitle = "Ranking based on 2013-2020 data; tidy score based on drooling, shedding, grooming frequency",
+       x = "Untidiness Score",
+       y = "Average Popularity Rank") +
+  theme_tidy_dog()
+```
+
+:::
+
+## `pivot_wider()`
+
+which breeds have had the biggest jump in popularity?
+
+::: {style="text-align: center"}
+`ranks_pivoted`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r ranks-pivoted-2-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> head(9)) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+which breeds have had the biggest jump in popularity?
+
+::: {style="text-align: center"}
+`ranks_pivoted`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r ranks-pivoted-3-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> head(9)) |> kableExtra::row_spec(c(1,8,9), bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+will all deliver the same results:
+
+1. `filter(year %in% c(2013, 2020))`
+
+2. `filter(year == 2013 | year == 2020)`
+
+3. `filter(year == min(year) | year == max(year))` :point_left: most robust option
+
+```{r pivot-wider}
+rank_change <- ranks_pivoted |>  
+  filter(year == min(year) | year == max(year)) |> 
+  pivot_wider(names_from = "year",
+              values_from = "rank") |>  
+  mutate(change = `2013` - `2020`) |> 
+  filter(`2020` <= 50) |>  
+  slice_max(change, n = 6)
+```
+
+::: {style="font-size: 0.75em"}
+```{r rank-change-kable}
+#| echo: false
+knitr::kable(rank_change) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+:::
+
+## Dumbbell plot
+
+useful plot type for showing change between two points
+
+to be honest: it's easier to make these with `ggalt::geom_dumbbell()`
+
+but we can use `ggplot2` to learn a) how to combine multiple geoms and b) how inherited `aes` works
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r dumbbell-basic}
+#| fig-height: 3
+#| fig-align: center
+rank_change |>  
+  ggplot(aes(y = breed)) +
+  geom_segment(aes(yend = breed, x = `2013`, xend = `2020`)) +
+  geom_point(aes(x = `2013`), color = "#c991b8", size = 3) +
+  geom_point(aes(x = `2020`), color = "#6A395B", size = 3) +
+  geom_label(aes(x = `2020`, label = `2020`), vjust = -0.5) +
+  geom_label(aes(x = `2013`, label = `2013`), vjust = -0.5)
+```
+
+### Custom
+
+```{r dumbbell-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+rank_change |>  
+  mutate(middle = `2020` + (change / 2)) |>  
+  ggplot(aes(y = reorder(breed, -`2020`))) +
+  geom_segment(aes(yend = reorder(breed, -`2020`), x = `2013`, xend = `2020`), 
+               color = "grey20") +
+  geom_point(aes(x = `2013`), color = "#c991b8", size = 3) +
+  geom_point(aes(x = `2020`), color = "#6A395B", size = 3) +
+  geom_label(aes(x = `2020`, label = `2020`), family = "prompt", vjust = -0.5) +
+  geom_label(aes(x = `2013`, label = `2013`), family = "prompt", vjust = -0.5) +
+  geom_text(aes(x = middle, label = str_c("+", change)), family = "prompt", 
+            vjust = -0.75, size = 3.5) +
+  scale_x_reverse() +
+  labs(x = "Popularity Ranking",
+       y = NULL,
+       title = "Dog breeds with the biggest jump in popularity from 2013",
+       subtitle = "Among the top 50 in 2020") +
+  theme_tidy_dog() +
+  theme(panel.grid.major.y = element_blank(),
+        plot.title.position = "plot")
+```
+
+:::

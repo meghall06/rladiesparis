@@ -1,1 +1,1 @@
-Sitemap: https://quartopub.com/sites/meghan/keeping-it-tidy/sitemap.xml
+Sitemap: https://meghan.quarto.pub/keeping-it-tidy/sitemap.xml
