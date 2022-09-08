@@ -2,13 +2,16 @@
 title: "Keeping it Tidy"
 subtitle: "*Using the Tidyverse to Organize, Transform, and Visualize Data*<br>Workshop hosted by Meghan Hall, through R-Ladies Paris<br>September 8, 2022 | 1pm EST / 7pm CEST"
 from: markdown+emoji
+header-includes: |
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        rel="stylesheet"/>
 execute:
   warning: false
 ---
 
 <a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary">**Register now**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Workshop slides**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Code file**</a>
 
-## About the Workshop
+## About the workshop
 
 This 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
 
@@ -16,7 +19,7 @@ The event is free and will be held virtually over Zoom, though registration is r
 
 ![](images/image.png)
 
-### Technical Details
+### Technical details
 
 You are free to "code along" throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won't be time for individual troubleshooting.
 
@@ -371,7 +374,7 @@ untidy_dogs |>
 
 ## Tidy data
 
-From the work we've done so far, we know that Bernese Mountain Dogs are among the untidiest of all: they have the highest score of 11. So far we've mostly been working with the `breed_traits` data, but we have a whole other data set, `breed_ranks`. Can we look at how the popularity ranking of Bernese Mountain Dogs has shifted over time?
+From the previous section, we know that Bernese Mountain Dogs are among the untidiest of all: they have the highest score of 11. So far we've mostly been working with the `breed_traits` data, but we have a whole other data set, `breed_ranks`. Can we look at how the popularity ranking of Bernese Mountain Dogs has shifted over time?
 
 ::: {style="font-size: 0.75em"}
 ```{r bernese-kable-1}
@@ -391,9 +394,13 @@ We discussed earlier that the tidyverse is opinionated on the topic of **tidy da
 3. Each value must have its own cell.<br>
 - [**R for Data Science**](https://r4ds.had.co.nz/tidy-data.html)
 
+How does `breed_ranks` violate these rules? We have a year variable, but that variable does not actually exist as such, in its own column. Shown above is one observation, by dog breed. But that "one" observation is actually eight separate observations: the rank in 2013, the rank in 2014, etc. Each observation needs to have its own row.
+
 ### `pivot_longer()`
 
-Thankfully, the tidyverse gives us a handy solution from the `tidyr` package.
+Thankfully, the tidyverse gives us a handy solution from the `tidyr` package! The current structure of `breed_ranks` is in a *wide* format, and we need it to be in a *long* format. `pivot_longer()` to the rescue.
+
+The code below uses the assignment operator to create a new data frame called `ranks_pivoted` based on `breed_rank`. The `pivot_longer()` function here has three arguments: the columns we want to pivot (remember we need to use back ticks because these variable names have spaces in them), the name for the new column consisting of the previous column headers, and the name for the new column consisting of the previous column *values*.
 
 ```{r pivot-longer}
 ranks_pivoted <- breed_rank |> 
@@ -402,6 +409,8 @@ ranks_pivoted <- breed_rank |>
                values_to = "rank")
 ```
 
+The output is below. This data is now tidy, with each observation (e.g., the rank in 2013) in its own row and separate columns for each variable.
+
 ::: {style="font-size: 0.75em"}
 ```{r bernese-kable-3}
 #| echo: false
@@ -409,6 +418,8 @@ knitr::kable(ranks_pivoted |> filter(str_detect(Breed, "Bernese"))) |>
   kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
+
+We can do a bit more cleaning up of this data set. First, the `rename()` function makes it easy to change the names of variables (the new name comes first, followed by the original)---we can change `Breed` to `breed` to match our other data set. And the `parse_number()` function from `readr` allows us to pull out the integer from our `year` column. This is an example of how you can use `mutate()` to rewrite existing variables in addition to creating new ones.
 
 ```{r pivot-longer-2}
 ranks_pivoted <- ranks_pivoted |> 
@@ -423,6 +434,17 @@ knitr::kable(ranks_pivoted |> filter(str_detect(breed, "Bernese"))) |>
   kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
+
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+There are more pivoting examples [here](https://r4ds.had.co.nz/tidy-data.html#pivoting) and [here](https://dcl-wrangle.stanford.edu/pivot-advanced.html).
+:::
+
+Now that our data is appropriately tidy, we can return to the question from the beginning of this section: how has the popularity ranking of Bernese Mountain Dogs has shifted over time? Since I'm only interested in Bernese Mountain Dogs, and our new `ranks_pivoted` data frame contains all the breeds, the code below starts with a `filter()` statement. 
+
+I could use `filter(breed == "Bernese Mountain Dogs")`, but perhaps you don't want to type all that out. The `stringr` package (part of the tidyverse) has many functions for dealing with string (text) data, and `str_detect()` is among the most useful. It returns `TRUE` or `FALSE` as to whether the variable you select (the first argument of the function) contains the string you provide (the second argument of the function). This function within a function will `filter` to only the observations for which our `str_detect` expression is `TRUE`.
+
+Our `ggplot` function assigns `year` to the x-axis and `rank` to the `y-axis`. I've also added `label = rank` to indicate that I also want my `rank` variable to determine the label. Instead of adding a `geom_bar()` label like last time, here we've added a `geom_point` layer for dots as well as a `geom_text` layer to add a label. The `vjust` argument within that function specifies the desired vertical justification for the labels.
 
 ## Dot plot
 
@@ -452,7 +474,9 @@ ranks_pivoted |>
   ggplot(aes(x = year, y = rank, label = rank)) +
   geom_point(size = 3) +
   geom_text(vjust = 2) +
+  # flip the y-axis
   scale_y_reverse(limits = c(50, 1)) +
+  # specify the breaks on the x-axis
   scale_x_continuous(breaks = seq(2013, 2020, 1)) +
   labs(x = NULL, y = "Popularity Rank",
        title = "Popularity of Bernese Mountain Dogs") +
@@ -463,7 +487,9 @@ ranks_pivoted |>
 
 ## Line graph
 
-can we plot the popularity ranking of the untidiest dogs?
+In the previous section we plotted the ranking over time for the Bernese Mountain Dogs. Can we do the same for the six untidiest dogs we identified previously in the `untidy_dogs` data set?
+
+These are the two data sets we have:
 
 ::: columns
 ::: {.column width="50%"}
@@ -493,18 +519,29 @@ knitr::kable(ranks_pivoted |> head(6)) |>
 :::
 :::
 
+The data we want to plot (the rankings by year) is in the `ranks_pivoted` data set, but that holds all the dog breeds and we only want to include the six breeds we have in the `untidy_dogs` data set.
+
+Thankfully, you can also use the `filter()` function to filter across data sets! The code below creates a new data set `untidy_popularity` based on the `ranks_pivoted` data set that keeps only the observations for which the `breed` is included among the list of `breed`s within the `untidy_dogs` data set. There are two more common operators used here: `%in%` allows for multiple options within a list, and `$` refers to a specific variable within another data set.
+
 ```{r line-graph}
 untidy_popularity <- ranks_pivoted |> 
   filter(breed %in% untidy_dogs$breed)
 ```
 
-check that this filtered the way we wanted it to!
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+You could get the same results with `filter(breed %in% c("Bernese Mountain Dogs", "Leonbergers", "Newfoundlands", "Bloodhounds", "St. Bernards", "Old English Sheepdogs"))`, but that is a lot of typing (i.e., many opportunities for typos).
+:::
+
+To check that this filter worked as we wanted it to, we can apply a `count()` function to our new `untidy_popularity` data set.
 
 ```{r count-check}
 #| eval: false
 untidy_popularity |> 
   count(breed)
 ```
+
+There are six breeds included (correct), with eight separate observations each (one for each year; correct).
 
 ::: {style="font-size: 0.75em"}
 ```{r count-check-kable}
@@ -513,6 +550,8 @@ knitr::kable(untidy_popularity |> count(breed)) |>
   kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
+
+We can create a line graph off of this `untidy_popularity` data set using the `geom_line()` function. (I've also included a `geom_point` layer to add points to those lines.) The `year` variable is on the x-axis with `rank` on the y-axis, similar to what we've used before, but in order to get multiple lines for the multiple breeds, I've added the `breed` variable onto both the `group` and `color` aesthetics. This will group the data points by breed and also create a color legend.
 
 ::: {.panel-tabset}
 
@@ -535,21 +574,28 @@ untidy_popularity |>
 #| fig-height: 4.5
 #| fig-align: center
 untidy_popularity |> 
+  # create a label that applies for the last point only
   mutate(label = ifelse(year == 2020, breed, NA)) |> 
   ggplot(aes(x = year, y = rank, group = breed, color = breed,
              label = label)) +
   geom_line() +
   geom_point(size = 3) +
+  # apply the label so I don't have to use a legend
   geom_text(hjust = -0.1, family = "prompt") +
+  # change the color scale
   scale_color_viridis_d(option = "A") +
+  # control the width of the x-axis (so I have room for labels)
+  # and specify breaks
   scale_x_continuous(expand = expansion(mult = c(0.025, 0.5)),
                      breaks = seq(2013, 2020, 1)) +
+  # flip the y-axis so better rankings are "higher"
   scale_y_reverse() +
   labs(title = "Popularity over time of the untidiest dogs",
        subtitle = "Based on drooling, shedding, and grooming frequency",
        x = NULL,
        y = "Popularity Rank") +
   theme_tidy_dog() +
+  # remove the legend since I used labels instead
   theme(legend.position = "none")
 ```
 
@@ -557,13 +603,19 @@ untidy_popularity |>
 
 ## Relational data
 
-can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+We have data on the `untidy_scores` for each breed as well as their popularity over time---can we create a scatter plot of the *average* popularity ranking against the `untidy_scores` for all breeds?
+
+We already have the `untidy_scores`, so let's focus on finding the average popularity ranking. Our `ranks_pivoted` data set holds that information in a tidy way, but there is one observation per year and we need to find the average per breed.
+
+The `group_by()`/`summarize()` combination of `dplyr` functions allows you to calculate aggregations by a specified group (or multiple!). Here, the code below groups by `breed` and creates a new variable, `avg_rank`, within a `summarize()` function by taking the mean of the existing `rank` variable.
 
 ```{r summ-1}
 avg_ranks <- ranks_pivoted |> 
   group_by(breed) |> 
   summarize(avg_rank = mean(rank))
 ```
+
+The first nine rows of our new `avg_ranks` data set are below. But we have an `NA` value! This is a quirk of the aggregation calculations available within `summarize()`. If there is any missing data among the values being summarized, `NA` will be returned. (From the raw data, you can find out that the American Hairless Terriers were only ranked in 2020.)
 
 ::: {style="font-size: 0.75em"}
 ```{r summ-1-kable}
@@ -572,6 +624,8 @@ knitr::kable(avg_ranks |> head(9)) |> kableExtra::row_spec(9, bold = T, color = 
   kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
+
+Depending on your data, this could be very useful information! But if you are aware of the missing data and still want to calculate the aggregations irrespective of any possible missing values, add `na.rm = TRUE` as an additional argument to your aggregations within `summarize()`.
 
 ```{r summ-2}
 avg_ranks <- ranks_pivoted |> 
@@ -585,7 +639,9 @@ avg_ranks <- ranks_pivoted |>
 ```
 :::
 
-can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+We now have all of the data that we need. Our new `avg_ranks` data set holds the average popularity ranking per breed, and the `untidy_scores` data set we created earlier holds each breed's untidy score.
+
+How do we put them together?
 
 ::: columns
 ::: {.column width="50%"}
@@ -617,28 +673,38 @@ knitr::kable(untidy_scores |> head(5)) |>
 :::
 :::
 
-other join types are available, but `left_join()` is the most common (more info in [**R4DS**](https://r4ds.had.co.nz/relational-data.html))
+Relational data---multiple tables of data that share one or more common elements---is extremely common, and it's worth becoming familiar with the tidyverse functions that allow you to join data tables.
+
+To solve this particular question, we'll use `left_join()`, which is a type of *mutating* join: it matches up observations across tables and moves variables from one to another.
+
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+We're focusing on a simple `left_join()` because it is the most common type of join. Other join types are available, and you can read more [here](https://r4ds.had.co.nz/relational-data.html).
+:::
+
+The syntax of this example is fairly simple: we're starting with the `avg_ranks` data set we just created and making a new one titled `tidy_and_rank`. The two arguments to the `left_join()` function are the name of the data set we want to get information from (`untidy_scores`) as well as the *key*, or the variable that connects the two data frames. In this case, it's `breed`.
 
 ```{r left-join-1}
 tidy_and_rank <- avg_ranks |> 
   left_join(untidy_scores, by = "breed")
 ```
 
-can specify **keys** with `by = "var"` 
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+You can have multiple keys: `by = c("var1","var2")` and even keys that have different variable names: `by = c("var_left" = "var_right")`. If you *don't* specify a key, R will default to any variable(s) that have the same name across tables. It is good practice to specify a key no matter what, even in a simple example like this, to avoid mistakes and make it clear what you're intending to do.
+:::
 
-- multiple: `by = c("var1","var2")`
-
-- different names: `by = c("var_left" = "var_right")`
+A quick peek at our new `tidy_and_rank` data set looks okay...
 
 ::: {style="font-size: 0.75em"}
 ```{r tidy-and-rank-kable}
 #| echo: false
-knitr::kable(tidy_and_rank |> head(2)) |>
+knitr::kable(tidy_and_rank |> head(5)) |>
   kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
 
-check that this worked the way we wanted it to!
+...but we can use `count()` again just to make sure that this worked the way we wanted it to.
 
 ```{r count-check-2}
 #| eval: false
@@ -646,19 +712,26 @@ tidy_and_rank |>
   count(untidy_score)
 ```
 
+And it looks like we have an `NA` value.
+
 ::: {style="font-size: 0.75em"}
 ```{r count-check-2-kable}
 #| echo: false
 knitr::kable(tidy_and_rank |> 
-  count(untidy_score))|> kableExtra::row_spec(10, bold = T, color = "#6A395B", background = "#F8F2F3")
+  count(untidy_score))|> kableExtra::row_spec(10, bold = T, color = "#6A395B", background = "#F8F2F3") |>
+  kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
+
+Let's further investigate with a simple `filter()` to see where the issue is. `is.na()` is a handy function to use within `filter()` that will return any observations with an NA value for the specified variable.
 
 ```{r na-1}
 #| eval: false
 tidy_and_rank |> 
   filter(is.na(untidy_score))
 ```
+
+It's the darn Plott Hounds again. We removed them from the original `breed_traits` data set, the basis of `untidy_scores`, but they were still present in the original `breed_ranks` data set, which is what this is based on.
 
 ::: {style="font-size: 0.75em"}
 ```{r na-1-kable}
@@ -669,20 +742,20 @@ knitr::kable(tidy_and_rank |>
 ```
 :::
 
+This is essentially the opposite of the operation we just did. We are filtering to keep any observations for which `untidy_score` is *not* (`!`) `NA`.
+
 ```{r na-2}
 tidy_and_rank <- tidy_and_rank |> 
   filter(!is.na(untidy_score))
 ```
 
-::: {style="font-size: 0.75em"}
-```{r na-2-kable}
-#| echo: false
-knitr::kable(tidy_and_rank |> count(untidy_score)) |>
-  kableExtra::kable_styling(full_width = FALSE)
-```
-:::
+You can run the `count()` code again if you wish to double-check, but we are good to go.
 
 ## Jitter plot
+
+You can create a simple scatter plot in `ggplot` with numeric variables on the x- and y-axes and a `geom_point` layer. But a case like this, where one of our variables is an interval like `untidy_score`, sometimes benefits from adding a bit of *jitter* to help showcase data points that might otherwise overlap in a scatter plot.
+
+That's possible by using a `geom_jitter` layer, where the width of the strip can be controlled by the `width` argument.
 
 ::: {.panel-tabset}
 
@@ -705,8 +778,11 @@ tidy_and_rank |>
 #| fig-align: center
 tidy_and_rank |>  
   ggplot(aes(x = untidy_score, y = avg_rank)) +
+  # specify the labels of the x-axis
   scale_x_continuous(breaks = seq(3, 11, 1)) +
+  # control the size, transparency, and color of the points
   geom_jitter(size = 3, width = 0.1, alpha = 0.7, color = "#6A395B") +
+  # flip the y-axis and control the labels
   scale_y_reverse(breaks = c(200, 150, 100, 50, 1)) +
   labs(title = "Dog breed popularity compared to their untidiness score",
        subtitle = "Ranking based on 2013-2020 data; tidy score based on drooling, shedding, grooming frequency",
@@ -717,42 +793,35 @@ tidy_and_rank |>
 
 :::
 
-## `pivot_wider()`
+## Dumbbell plot
 
-which breeds have had the biggest jump in popularity?
+The last question we'll answer from this data set is: which breeds have had the biggest jump in popularity from 2013 to 2020?
 
-::: {style="text-align: center"}
-`ranks_pivoted`
-:::
-
-::: {style="font-size: 0.75em"}
-```{r ranks-pivoted-2-kable}
-#| echo: false
-knitr::kable(ranks_pivoted |> head(9)) |>
-  kableExtra::kable_styling(full_width = FALSE)
-```
-:::
-
-which breeds have had the biggest jump in popularity?
-
-::: {style="text-align: center"}
-`ranks_pivoted`
-:::
+To answer that question, we're only interested in certain observations from `ranks_pivoted`, those with a `year` of 2013 or 2020.
 
 ::: {style="font-size: 0.75em"}
 ```{r ranks-pivoted-3-kable}
 #| echo: false
-knitr::kable(ranks_pivoted |> head(9)) |> kableExtra::row_spec(c(1,8,9), bold = T, color = "#6A395B", background = "#F8F2F3")
+knitr::kable(ranks_pivoted |> head(9)) |> kableExtra::row_spec(c(1,8,9), bold = T, color = "#6A395B", background = "#F8F2F3") |>
+  kableExtra::kable_styling(full_width = FALSE)
 ```
 :::
 
-will all deliver the same results:
+All three of the following functions would deliver the same results on this data set:
 
 1. `filter(year %in% c(2013, 2020))`
 
 2. `filter(year == 2013 | year == 2020)`
 
-3. `filter(year == min(year) | year == max(year))` :point_left: most robust option
+3. `filter(year == min(year) | year == max(year))` 
+
+The last option :point_up: is the most *robust*, meaning that it would still deliver the intended result if, say, you got an updated version of this data set with more years of data.
+
+### `pivot_wider()`
+
+The code below creates a new data set `rank_change` from `ranks_pivoted` with five different functions applied. After the `filter()` we discussed above, we would be left with two observations per breed, one for 2013 and 2020. But the desired structure for the dumbbell plot would have *one* observation per breed so 2013 and 2020 could be plotted separately. That means it's time to pivot again---but this time in the *opposite* direction with `pivot_wider()` instead of `pivot_longer()`.
+
+This `pivot_wider()` function has two arguments, to determine where the variable names come from and where the values are from. `mutate()` will give us a new `change` variable that calculates the difference, and we'll `filter` to only those breeds that are ranked within the top 50 in 2020. And lastly, another application of `slice_max()` will result in the top six breeds with the highest values of `change`.
 
 ```{r pivot-wider}
 rank_change <- ranks_pivoted |>  
@@ -764,6 +833,8 @@ rank_change <- ranks_pivoted |>
   slice_max(change, n = 6)
 ```
 
+That leaves us with six observations, one per breed, with separate variables for the rank in 2013, the rank in 2020, and the change. 
+
 ::: {style="font-size: 0.75em"}
 ```{r rank-change-kable}
 #| echo: false
@@ -772,13 +843,14 @@ knitr::kable(rank_change) |>
 ```
 :::
 
-## Dumbbell plot
+We can plot this data with a dumbbell plot, which are useful for showing the change between two points.
 
-useful plot type for showing change between two points
+:::{.callout-note icon="false"}
+## Note! :rotating_light:
+To be honest, it's easier to make dumbbell plots with `ggalt::geom_dumbbell()`. But we can use `ggplot` to learn a) how to combine multiple geoms and b) how inherited `aes` works.
+:::
 
-to be honest: it's easier to make these with `ggalt::geom_dumbbell()`
-
-but we can use `ggplot2` to learn a) how to combine multiple geoms and b) how inherited `aes` works
+We can build these in `ggplot` by adding multiple `geom_` layers. The first `ggplot()` function will contain only the mapped aesthetics that apply to *all* the `geom_` layers. Here, that's only `breed` on the y-axis. Each of the `geom_` layers can have their own aesthetics, as well. One `geom_point` maps the `2013` variable, another maps the `2020` variable, and a `geom_segment` layer creates the horizontal line that connects the two dots.
 
 ::: {.panel-tabset}
 
@@ -804,7 +876,9 @@ rank_change |>
 #| fig-height: 4.5
 #| fig-align: center
 rank_change |>  
+  # create a new variable to find the value of the middle
   mutate(middle = `2020` + (change / 2)) |>  
+  # order the breeds by their 2020 rank
   ggplot(aes(y = reorder(breed, -`2020`))) +
   geom_segment(aes(yend = reorder(breed, -`2020`), x = `2013`, xend = `2020`), 
                color = "grey20") +
@@ -812,8 +886,10 @@ rank_change |>
   geom_point(aes(x = `2020`), color = "#6A395B", size = 3) +
   geom_label(aes(x = `2020`, label = `2020`), family = "prompt", vjust = -0.5) +
   geom_label(aes(x = `2013`, label = `2013`), family = "prompt", vjust = -0.5) +
+  # label the value of the change at the middle of the line
   geom_text(aes(x = middle, label = str_c("+", change)), family = "prompt", 
             vjust = -0.75, size = 3.5) +
+  # flip the x-axis
   scale_x_reverse() +
   labs(x = "Popularity Ranking",
        y = NULL,
@@ -825,3 +901,17 @@ rank_change |>
 ```
 
 :::
+
+## Resources
+
+I hope this workshop has been a helpful introduction to the tidyverse. (If you found it useful and/or you think someone *else* would find it useful, I'd appreciate a Twitter share---I'm [@MeghanMHall](https://twitter.com/meghanmhall)!) But this intro just scratches the surface! It is a very powerful set of packages that can help you solve lots of problems. These are some of my favorite resources:
+
+- [**R for Data Science**](https://r4ds.had.co.nz/)
+
+- [**R for Excel users**](https://rstudio-conf-2020.github.io/r-for-excel/)
+
+- [**STAT 545**](https://stat545.com/)
+
+- [**RStudio Education**](https://education.rstudio.com/)
+
+- [**Learn `tidyverse`**](https://www.tidyverse.org/learn/)

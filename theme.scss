@@ -29,7 +29,7 @@ $border-color: $navbar-bg;
 }
 
 .btn-primary {
-  color: #ffffff;
+  color: $body-bg;
   background-color: #6A395B;
   border: 1px solid transparent;
   width: 25%;

@@ -110,6 +110,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -160,7 +161,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#about-the-workshop" id="toc-about-the-workshop" class="nav-link active" data-scroll-target="#about-the-workshop">About the Workshop</a>
   <ul class="collapse">
-  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details">Technical Details</a></li>
+  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details">Technical details</a></li>
   <li><a href="#website-materials" id="toc-website-materials" class="nav-link" data-scroll-target="#website-materials">Website materials</a></li>
   </ul></li>
   <li><a href="#r-and-the-tidyverse" id="toc-r-and-the-tidyverse" class="nav-link" data-scroll-target="#r-and-the-tidyverse">R and the <code>tidyverse</code></a>
@@ -185,8 +186,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#line-graph" id="toc-line-graph" class="nav-link" data-scroll-target="#line-graph">Line graph</a></li>
   <li><a href="#relational-data" id="toc-relational-data" class="nav-link" data-scroll-target="#relational-data">Relational data</a></li>
   <li><a href="#jitter-plot" id="toc-jitter-plot" class="nav-link" data-scroll-target="#jitter-plot">Jitter plot</a></li>
+  <li><a href="#dumbbell-plot" id="toc-dumbbell-plot" class="nav-link" data-scroll-target="#dumbbell-plot">Dumbbell plot</a>
+  <ul class="collapse">
   <li><a href="#pivot_wider" id="toc-pivot_wider" class="nav-link" data-scroll-target="#pivot_wider"><code>pivot_wider()</code></a></li>
-  <li><a href="#dumbbell-plot" id="toc-dumbbell-plot" class="nav-link" data-scroll-target="#dumbbell-plot">Dumbbell plot</a></li>
+  </ul></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
   </ul>
 </nav>
     </div>
@@ -217,7 +221,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The event is free and will be held virtually over Zoom, though registration is required!</p>
 <p><img src="images/image.png" class="img-fluid"></p>
 <section id="technical-details" class="level3">
-<h3 class="anchored" data-anchor-id="technical-details">Technical Details</h3>
+<h3 class="anchored" data-anchor-id="technical-details">Technical details</h3>
 <p>You are free to “code along” throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won’t be time for individual troubleshooting.</p>
 <p>If you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with <code>install.packages("tidyverse")</code>.</p>
 </section>
@@ -867,7 +871,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </section>
 <section id="tidy-data" class="level2">
 <h2 class="anchored" data-anchor-id="tidy-data">Tidy data</h2>
-<p>From the work we’ve done so far, we know that Bernese Mountain Dogs are among the untidiest of all: they have the highest score of 11. So far we’ve mostly been working with the <code>breed_traits</code> data, but we have a whole other data set, <code>breed_ranks</code>. Can we look at how the popularity ranking of Bernese Mountain Dogs has shifted over time?</p>
+<p>From the previous section, we know that Bernese Mountain Dogs are among the untidiest of all: they have the highest score of 11. So far we’ve mostly been working with the <code>breed_traits</code> data, but we have a whole other data set, <code>breed_ranks</code>. Can we look at how the popularity ranking of Bernese Mountain Dogs has shifted over time?</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -909,15 +913,18 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <blockquote class="blockquote">
 <p>There are three interrelated rules which make a dataset tidy:<br> 1. Each variable must have its own column.<br> 2. Each observation must have its own row.<br> 3. Each value must have its own cell.<br> - <a href="https://r4ds.had.co.nz/tidy-data.html"><strong>R for Data Science</strong></a></p>
 </blockquote>
+<p>How does <code>breed_ranks</code> violate these rules? We have a year variable, but that variable does not actually exist as such, in its own column. Shown above is one observation, by dog breed. But that “one” observation is actually eight separate observations: the rank in 2013, the rank in 2014, etc. Each observation needs to have its own row.</p>
 <section id="pivot_longer" class="level3">
 <h3 class="anchored" data-anchor-id="pivot_longer"><code>pivot_longer()</code></h3>
-<p>Thankfully, the tidyverse gives us a handy solution from the <code>tidyr</code> package.</p>
+<p>Thankfully, the tidyverse gives us a handy solution from the <code>tidyr</code> package! The current structure of <code>breed_ranks</code> is in a <em>wide</em> format, and we need it to be in a <em>long</em> format. <code>pivot_longer()</code> to the rescue.</p>
+<p>The code below uses the assignment operator to create a new data frame called <code>ranks_pivoted</code> based on <code>breed_rank</code>. The <code>pivot_longer()</code> function here has three arguments: the columns we want to pivot (remember we need to use back ticks because these variable names have spaces in them), the name for the new column consisting of the previous column headers, and the name for the new column consisting of the previous column <em>values</em>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ranks_pivoted <span class="ot">&lt;-</span> breed_rank <span class="sc">|&gt;</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="st">`</span><span class="at">2013 Rank</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2020 Rank</span><span class="st">`</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"year"</span>,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"rank"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The output is below. This data is now tidy, with each observation (e.g., the rank in 2013) in its own row and separate columns for each variable.</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -977,6 +984,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<p>We can do a bit more cleaning up of this data set. First, the <code>rename()</code> function makes it easy to change the names of variables (the new name comes first, followed by the original)—we can change <code>Breed</code> to <code>breed</code> to match our other data set. And the <code>parse_number()</code> function from <code>readr</code> allows us to pull out the integer from our <code>year</code> column. This is an example of how you can use <code>mutate()</code> to rewrite existing variables in addition to creating new ones.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ranks_pivoted <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">breed =</span> Breed) <span class="sc">|&gt;</span> </span>
@@ -1041,6 +1049,22 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are more pivoting examples <a href="https://r4ds.had.co.nz/tidy-data.html#pivoting">here</a> and <a href="https://dcl-wrangle.stanford.edu/pivot-advanced.html">here</a>.</p>
+</div>
+</div>
+<p>Now that our data is appropriately tidy, we can return to the question from the beginning of this section: how has the popularity ranking of Bernese Mountain Dogs has shifted over time? Since I’m only interested in Bernese Mountain Dogs, and our new <code>ranks_pivoted</code> data frame contains all the breeds, the code below starts with a <code>filter()</code> statement.</p>
+<p>I could use <code>filter(breed == "Bernese Mountain Dogs")</code>, but perhaps you don’t want to type all that out. The <code>stringr</code> package (part of the tidyverse) has many functions for dealing with string (text) data, and <code>str_detect()</code> is among the most useful. It returns <code>TRUE</code> or <code>FALSE</code> as to whether the variable you select (the first argument of the function) contains the string you provide (the second argument of the function). This function within a function will <code>filter</code> to only the observations for which our <code>str_detect</code> expression is <code>TRUE</code>.</p>
+<p>Our <code>ggplot</code> function assigns <code>year</code> to the x-axis and <code>rank</code> to the <code>y-axis</code>. I’ve also added <code>label = rank</code> to indicate that I also want my <code>rank</code> variable to determine the label. Instead of adding a <code>geom_bar()</code> label like last time, here we’ve added a <code>geom_point</code> layer for dots as well as a <code>geom_text</code> layer to add a label. The <code>vjust</code> argument within that function specifies the desired vertical justification for the labels.</p>
 </section>
 </section>
 <section id="dot-plot" class="level2">
@@ -1073,11 +1097,13 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">label =</span> rank)) <span class="sc">+</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">vjust =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2013</span>, <span class="dv">2020</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Popularity Rank"</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Popularity of Bernese Mountain Dogs"</span>) <span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># flip the y-axis</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify the breaks on the x-axis</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2013</span>, <span class="dv">2020</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Popularity Rank"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Popularity of Bernese Mountain Dogs"</span>) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1093,7 +1119,8 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </section>
 <section id="line-graph" class="level2">
 <h2 class="anchored" data-anchor-id="line-graph">Line graph</h2>
-<p>can we plot the popularity ranking of the untidiest dogs?</p>
+<p>In the previous section we plotted the ranking over time for the Bernese Mountain Dogs. Can we do the same for the six untidiest dogs we identified previously in the <code>untidy_dogs</code> data set?</p>
+<p>These are the two data sets we have:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div style="text-align: center">
@@ -1196,15 +1223,31 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<p>The data we want to plot (the rankings by year) is in the <code>ranks_pivoted</code> data set, but that holds all the dog breeds and we only want to include the six breeds we have in the <code>untidy_dogs</code> data set.</p>
+<p>Thankfully, you can also use the <code>filter()</code> function to filter across data sets! The code below creates a new data set <code>untidy_popularity</code> based on the <code>ranks_pivoted</code> data set that keeps only the observations for which the <code>breed</code> is included among the list of <code>breed</code>s within the <code>untidy_dogs</code> data set. There are two more common operators used here: <code>%in%</code> allows for multiple options within a list, and <code>$</code> refers to a specific variable within another data set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>untidy_popularity <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(breed <span class="sc">%in%</span> untidy_dogs<span class="sc">$</span>breed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>check that this filtered the way we wanted it to!</p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You could get the same results with <code>filter(breed %in% c("Bernese Mountain Dogs", "Leonbergers", "Newfoundlands", "Bloodhounds", "St. Bernards", "Old English Sheepdogs"))</code>, but that is a lot of typing (i.e., many opportunities for typos).</p>
+</div>
+</div>
+<p>To check that this filter worked as we wanted it to, we can apply a <code>count()</code> function to our new <code>untidy_popularity</code> data set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>untidy_popularity <span class="sc">|&gt;</span> </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(breed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>There are six breeds included (correct), with eight separate observations each (one for each year; correct).</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -1247,6 +1290,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<p>We can create a line graph off of this <code>untidy_popularity</code> data set using the <code>geom_line()</code> function. (I’ve also included a <code>geom_point</code> layer to add points to those lines.) The <code>year</code> variable is on the x-axis with <code>rank</code> on the y-axis, similar to what we’ve used before, but in order to get multiple lines for the multiple breeds, I’ve added the <code>breed</code> variable onto both the <code>group</code> and <code>color</code> aesthetics. This will group the data points by breed and also create a color legend.</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Basic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Custom</a></li></ul>
 <div class="tab-content">
@@ -1270,22 +1314,29 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <details>
 <summary>expand for full code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>untidy_popularity <span class="sc">|&gt;</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2020</span>, breed, <span class="cn">NA</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">group =</span> breed, <span class="at">color =</span> breed,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> label)) <span class="sc">+</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">family =</span> <span class="st">"prompt"</span>) <span class="sc">+</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"A"</span>) <span class="sc">+</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>)),</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2013</span>, <span class="dv">2020</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Popularity over time of the untidiest dogs"</span>,</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Based on drooling, shedding, and grooming frequency"</span>,</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Popularity Rank"</span>) <span class="sc">+</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>() <span class="sc">+</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a label that applies for the last point only</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2020</span>, breed, <span class="cn">NA</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">group =</span> breed, <span class="at">color =</span> breed,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> label)) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply the label so I don't have to use a legend</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">family =</span> <span class="st">"prompt"</span>) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># change the color scale</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"A"</span>) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># control the width of the x-axis (so I have room for labels)</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and specify breaks</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>)),</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2013</span>, <span class="dv">2020</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># flip the y-axis so better rankings are "higher"</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Popularity over time of the untidiest dogs"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Based on drooling, shedding, and grooming frequency"</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Popularity Rank"</span>) <span class="sc">+</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>() <span class="sc">+</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove the legend since I used labels instead</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1301,12 +1352,15 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </section>
 <section id="relational-data" class="level2">
 <h2 class="anchored" data-anchor-id="relational-data">Relational data</h2>
-<p>can we plot the <em>average</em> popularity ranking against the <code>tidy_scores</code> for <em>all</em> dogs?</p>
+<p>We have data on the <code>untidy_scores</code> for each breed as well as their popularity over time—can we create a scatter plot of the <em>average</em> popularity ranking against the <code>untidy_scores</code> for all breeds?</p>
+<p>We already have the <code>untidy_scores</code>, so let’s focus on finding the average popularity ranking. Our <code>ranks_pivoted</code> data set holds that information in a tidy way, but there is one observation per year and we need to find the average per breed.</p>
+<p>The <code>group_by()</code>/<code>summarize()</code> combination of <code>dplyr</code> functions allows you to calculate aggregations by a specified group (or multiple!). Here, the code below groups by <code>breed</code> and creates a new variable, <code>avg_rank</code>, within a <code>summarize()</code> function by taking the mean of the existing <code>rank</code> variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>avg_ranks <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(breed) <span class="sc">|&gt;</span> </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_rank =</span> <span class="fu">mean</span>(rank))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The first nine rows of our new <code>avg_ranks</code> data set are below. But we have an <code>NA</code> value! This is a quirk of the aggregation calculations available within <code>summarize()</code>. If there is any missing data among the values being summarized, <code>NA</code> will be returned. (From the raw data, you can find out that the American Hairless Terriers were only ranked in 2020.)</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -1361,6 +1415,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<p>Depending on your data, this could be very useful information! But if you are aware of the missing data and still want to calculate the aggregations irrespective of any possible missing values, add <code>na.rm = TRUE</code> as an additional argument to your aggregations within <code>summarize()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>avg_ranks <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(breed) <span class="sc">|&gt;</span> </span>
@@ -1420,7 +1475,8 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
-<p>can we plot the <em>average</em> popularity ranking against the <code>tidy_scores</code> for <em>all</em> dogs?</p>
+<p>We now have all of the data that we need. Our new <code>avg_ranks</code> data set holds the average popularity ranking per breed, and the <code>untidy_scores</code> data set we created earlier holds each breed’s untidy score.</p>
+<p>How do we put them together?</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div style="text-align: center">
@@ -1508,16 +1564,40 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
-<p>other join types are available, but <code>left_join()</code> is the most common (more info in <a href="https://r4ds.had.co.nz/relational-data.html"><strong>R4DS</strong></a>)</p>
+<p>Relational data—multiple tables of data that share one or more common elements—is extremely common, and it’s worth becoming familiar with the tidyverse functions that allow you to join data tables.</p>
+<p>To solve this particular question, we’ll use <code>left_join()</code>, which is a type of <em>mutating</em> join: it matches up observations across tables and moves variables from one to another.</p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We’re focusing on a simple <code>left_join()</code> because it is the most common type of join. Other join types are available, and you can read more <a href="https://r4ds.had.co.nz/relational-data.html">here</a>.</p>
+</div>
+</div>
+<p>The syntax of this example is fairly simple: we’re starting with the <code>avg_ranks</code> data set we just created and making a new one titled <code>tidy_and_rank</code>. The two arguments to the <code>left_join()</code> function are the name of the data set we want to get information from (<code>untidy_scores</code>) as well as the <em>key</em>, or the variable that connects the two data frames. In this case, it’s <code>breed</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tidy_and_rank <span class="ot">&lt;-</span> avg_ranks <span class="sc">|&gt;</span> </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(untidy_scores, <span class="at">by =</span> <span class="st">"breed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>can specify <strong>keys</strong> with <code>by = "var"</code></p>
-<ul>
-<li><p>multiple: <code>by = c("var1","var2")</code></p></li>
-<li><p>different names: <code>by = c("var_left" = "var_right")</code></p></li>
-</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can have multiple keys: <code>by = c("var1","var2")</code> and even keys that have different variable names: <code>by = c("var_left" = "var_right")</code>. If you <em>don’t</em> specify a key, R will default to any variable(s) that have the same name across tables. It is good practice to specify a key no matter what, even in a simple example like this, to avoid mistakes and make it clear what you’re intending to do.</p>
+</div>
+</div>
+<p>A quick peek at our new <code>tidy_and_rank</code> data set looks okay…</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -1541,22 +1621,38 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
    <td style="text-align:right;"> 105.875 </td>
    <td style="text-align:right;"> 6 </td>
   </tr>
+  <tr>
+   <td style="text-align:left;"> Airedale Terriers </td>
+   <td style="text-align:right;"> 57.375 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Akitas </td>
+   <td style="text-align:right;"> 46.500 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alaskan Malamutes </td>
+   <td style="text-align:right;"> 58.875 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
 </tbody>
 </table>
 
 </div>
 </div>
 </div>
-<p>check that this worked the way we wanted it to!</p>
+<p>…but we can use <code>count()</code> again just to make sure that this worked the way we wanted it to.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tidy_and_rank <span class="sc">|&gt;</span> </span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(untidy_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>And it looks like we have an <code>NA</code> value.</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
 
-<table>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:right;"> untidy_score </th>
@@ -1610,10 +1706,12 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<p>Let’s further investigate with a simple <code>filter()</code> to see where the issue is. <code>is.na()</code> is a handy function to use within <code>filter()</code> that will return any observations with an NA value for the specified variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tidy_and_rank <span class="sc">|&gt;</span> </span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(untidy_score))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>It’s the darn Plott Hounds again. We removed them from the original <code>breed_traits</code> data set, the basis of <code>untidy_scores</code>, but they were still present in the original <code>breed_ranks</code> data set, which is what this is based on.</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -1638,67 +1736,17 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+<p>This is essentially the opposite of the operation we just did. We are filtering to keep any observations for which <code>untidy_score</code> is <em>not</em> (<code>!</code>) <code>NA</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tidy_and_rank <span class="ot">&lt;-</span> tidy_and_rank <span class="sc">|&gt;</span> </span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(untidy_score))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div style="font-size: 0.75em">
-<div class="cell">
-<div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:right;"> untidy_score </th>
-   <th style="text-align:right;"> n </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 25 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 6 </td>
-   <td style="text-align:right;"> 43 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 7 </td>
-   <td style="text-align:right;"> 59 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 8 </td>
-   <td style="text-align:right;"> 30 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 9 </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 10 </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
+<p>You can run the <code>count()</code> code again if you wish to double-check, but we are good to go.</p>
 </section>
 <section id="jitter-plot" class="level2">
 <h2 class="anchored" data-anchor-id="jitter-plot">Jitter plot</h2>
+<p>You can create a simple scatter plot in <code>ggplot</code> with numeric variables on the x- and y-axes and a <code>geom_point</code> layer. But a case like this, where one of our variables is an interval like <code>untidy_score</code>, sometimes benefits from adding a bit of <em>jitter</em> to help showcase data points that might otherwise overlap in a scatter plot.</p>
+<p>That’s possible by using a <code>geom_jitter</code> layer, where the width of the strip can be controlled by the <code>width</code> argument.</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Basic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Custom</a></li></ul>
 <div class="tab-content">
@@ -1722,14 +1770,17 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <summary>expand for full code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>tidy_and_rank <span class="sc">|&gt;</span>  </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> untidy_score, <span class="at">y =</span> avg_rank)) <span class="sc">+</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">11</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#6A395B"</span>) <span class="sc">+</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">150</span>, <span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dog breed popularity compared to their untidiness score"</span>,</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Ranking based on 2013-2020 data; tidy score based on drooling, shedding, grooming frequency"</span>,</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Untidiness Score"</span>,</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Popularity Rank"</span>) <span class="sc">+</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify the labels of the x-axis</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">11</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># control the size, transparency, and color of the points</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#6A395B"</span>) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># flip the y-axis and control the labels</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">150</span>, <span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dog breed popularity compared to their untidiness score"</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Ranking based on 2013-2020 data; tidy score based on drooling, shedding, grooming frequency"</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Untidiness Score"</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Popularity Rank"</span>) <span class="sc">+</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1743,85 +1794,15 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </section>
-<section id="pivot_wider" class="level2">
-<h2 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider()</code></h2>
-<p>which breeds have had the biggest jump in popularity?</p>
-<div style="text-align: center">
-<p><code>ranks_pivoted</code></p>
-</div>
+<section id="dumbbell-plot" class="level2">
+<h2 class="anchored" data-anchor-id="dumbbell-plot">Dumbbell plot</h2>
+<p>The last question we’ll answer from this data set is: which breeds have had the biggest jump in popularity from 2013 to 2020?</p>
+<p>To answer that question, we’re only interested in certain observations from <code>ranks_pivoted</code>, those with a <code>year</code> of 2013 or 2020.</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
 
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> breed </th>
-   <th style="text-align:right;"> year </th>
-   <th style="text-align:right;"> rank </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2013 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2014 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2015 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2016 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2017 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2018 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2019 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Retrievers (Labrador) </td>
-   <td style="text-align:right;"> 2020 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> French Bulldogs </td>
-   <td style="text-align:right;"> 2013 </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<p>which breeds have had the biggest jump in popularity?</p>
-<div style="text-align: center">
-<p><code>ranks_pivoted</code></p>
-</div>
-<div style="font-size: 0.75em">
-<div class="cell">
-<div class="cell-output-display">
-
-<table>
  <thead>
   <tr>
    <th style="text-align:left;"> breed </th>
@@ -1881,12 +1862,17 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
-<p>will all deliver the same results:</p>
+<p>All three of the following functions would deliver the same results on this data set:</p>
 <ol type="1">
 <li><p><code>filter(year %in% c(2013, 2020))</code></p></li>
 <li><p><code>filter(year == 2013 | year == 2020)</code></p></li>
-<li><p><code>filter(year == min(year) | year == max(year))</code> <span class="emoji" data-emoji="point_left">👈</span> most robust option</p></li>
+<li><p><code>filter(year == min(year) | year == max(year))</code></p></li>
 </ol>
+<p>The last option <span class="emoji" data-emoji="point_up">☝️</span> is the most <em>robust</em>, meaning that it would still deliver the intended result if, say, you got an updated version of this data set with more years of data.</p>
+<section id="pivot_wider" class="level3">
+<h3 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider()</code></h3>
+<p>The code below creates a new data set <code>rank_change</code> from <code>ranks_pivoted</code> with five different functions applied. After the <code>filter()</code> we discussed above, we would be left with two observations per breed, one for 2013 and 2020. But the desired structure for the dumbbell plot would have <em>one</em> observation per breed so 2013 and 2020 could be plotted separately. That means it’s time to pivot again—but this time in the <em>opposite</em> direction with <code>pivot_wider()</code> instead of <code>pivot_longer()</code>.</p>
+<p>This <code>pivot_wider()</code> function has two arguments, to determine where the variable names come from and where the values are from. <code>mutate()</code> will give us a new <code>change</code> variable that calculates the difference, and we’ll <code>filter</code> to only those breeds that are ranked within the top 50 in 2020. And lastly, another application of <code>slice_max()</code> will result in the top six breeds with the highest values of <code>change</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>rank_change <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span>  </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="fu">min</span>(year) <span class="sc">|</span> year <span class="sc">==</span> <span class="fu">max</span>(year)) <span class="sc">|&gt;</span> </span>
@@ -1896,6 +1882,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">2020</span><span class="st">`</span> <span class="sc">&lt;=</span> <span class="dv">50</span>) <span class="sc">|&gt;</span>  </span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(change, <span class="at">n =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>That leaves us with six observations, one per breed, with separate variables for the rank in 2013, the rank in 2020, and the change.</p>
 <div style="font-size: 0.75em">
 <div class="cell">
 <div class="cell-output-display">
@@ -1952,12 +1939,21 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
-</section>
-<section id="dumbbell-plot" class="level2">
-<h2 class="anchored" data-anchor-id="dumbbell-plot">Dumbbell plot</h2>
-<p>useful plot type for showing change between two points</p>
-<p>to be honest: it’s easier to make these with <code>ggalt::geom_dumbbell()</code></p>
-<p>but we can use <code>ggplot2</code> to learn a) how to combine multiple geoms and b) how inherited <code>aes</code> works</p>
+<p>We can plot this data with a dumbbell plot, which are useful for showing the change between two points.</p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To be honest, it’s easier to make dumbbell plots with <code>ggalt::geom_dumbbell()</code>. But we can use <code>ggplot</code> to learn a) how to combine multiple geoms and b) how inherited <code>aes</code> works.</p>
+</div>
+</div>
+<p>We can build these in <code>ggplot</code> by adding multiple <code>geom_</code> layers. The first <code>ggplot()</code> function will contain only the mapped aesthetics that apply to <em>all</em> the <code>geom_</code> layers. Here, that’s only <code>breed</code> on the y-axis. Each of the <code>geom_</code> layers can have their own aesthetics, as well. One <code>geom_point</code> maps the <code>2013</code> variable, another maps the <code>2020</code> variable, and a <code>geom_segment</code> layer creates the horizontal line that connects the two dots.</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Basic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Custom</a></li></ul>
 <div class="tab-content">
@@ -1984,24 +1980,28 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <details>
 <summary>expand for full code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>rank_change <span class="sc">|&gt;</span>  </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">middle =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span> <span class="sc">+</span> (change <span class="sc">/</span> <span class="dv">2</span>)) <span class="sc">|&gt;</span>  </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(breed, <span class="sc">-</span><span class="st">`</span><span class="at">2020</span><span class="st">`</span>))) <span class="sc">+</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">yend =</span> <span class="fu">reorder</span>(breed, <span class="sc">-</span><span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">xend =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), </span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#c991b8"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#6A395B"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">family =</span> <span class="st">"prompt"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">family =</span> <span class="st">"prompt"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> middle, <span class="at">label =</span> <span class="fu">str_c</span>(<span class="st">"+"</span>, change)), <span class="at">family =</span> <span class="st">"prompt"</span>, </span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity Ranking"</span>,</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>,</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Dog breeds with the biggest jump in popularity from 2013"</span>,</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Among the top 50 in 2020"</span>) <span class="sc">+</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>() <span class="sc">+</span></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a new variable to find the value of the middle</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">middle =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span> <span class="sc">+</span> (change <span class="sc">/</span> <span class="dv">2</span>)) <span class="sc">|&gt;</span>  </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># order the breeds by their 2020 rank</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(breed, <span class="sc">-</span><span class="st">`</span><span class="at">2020</span><span class="st">`</span>))) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">yend =</span> <span class="fu">reorder</span>(breed, <span class="sc">-</span><span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">xend =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), </span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#c991b8"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#6A395B"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">family =</span> <span class="st">"prompt"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">family =</span> <span class="st">"prompt"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># label the value of the change at the middle of the line</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> middle, <span class="at">label =</span> <span class="fu">str_c</span>(<span class="st">"+"</span>, change)), <span class="at">family =</span> <span class="st">"prompt"</span>, </span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># flip the x-axis</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity Ranking"</span>,</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Dog breeds with the biggest jump in popularity from 2013"</span>,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Among the top 50 in 2020"</span>) <span class="sc">+</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tidy_dog</span>() <span class="sc">+</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2014,6 +2014,18 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<p>I hope this workshop has been a helpful introduction to the tidyverse. (If you found it useful and/or you think someone <em>else</em> would find it useful, I’d appreciate a Twitter share—I’m <a href="https://twitter.com/meghanmhall"><span class="citation" data-cites="MeghanMHall">@MeghanMHall</span></a>!) But this intro just scratches the surface! It is a very powerful set of packages that can help you solve lots of problems. These are some of my favorite resources:</p>
+<ul>
+<li><p><a href="https://r4ds.had.co.nz/"><strong>R for Data Science</strong></a></p></li>
+<li><p><a href="https://rstudio-conf-2020.github.io/r-for-excel/"><strong>R for Excel users</strong></a></p></li>
+<li><p><a href="https://stat545.com/"><strong>STAT 545</strong></a></p></li>
+<li><p><a href="https://education.rstudio.com/"><strong>RStudio Education</strong></a></p></li>
+<li><p><a href="https://www.tidyverse.org/learn/"><strong>Learn <code>tidyverse</code></strong></a></p></li>
+</ul>
 
 
 </section>
