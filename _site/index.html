@@ -159,7 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Workshop Outline</h2>
    
   <ul>
-  <li><a href="#about-the-workshop" id="toc-about-the-workshop" class="nav-link active" data-scroll-target="#about-the-workshop">About the Workshop</a>
+  <li><a href="#about-the-workshop" id="toc-about-the-workshop" class="nav-link active" data-scroll-target="#about-the-workshop">About the workshop</a>
   <ul class="collapse">
   <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details">Technical details</a></li>
   <li><a href="#website-materials" id="toc-website-materials" class="nav-link" data-scroll-target="#website-materials">Website materials</a></li>
@@ -214,26 +214,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p><a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary"><strong>Register now</strong></a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary"><strong>Workshop slides</strong></a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary"><strong>Code file</strong></a></p>
+<p><a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary"><strong>Register now</strong></a> <a href="https://meghan.rbind.io/slides/rladiesparis/rladiesparis.html#/title-slide" class="btn btn-primary"><strong>Workshop slides</strong></a> <a href="https://github.com/meghall06/rladiesparis/blob/master/keeping-it-tidy.R" class="btn btn-primary"><strong>Code file</strong></a></p>
 <section id="about-the-workshop" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-workshop">About the Workshop</h2>
-<p>This 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.</p>
+<h2 class="anchored" data-anchor-id="about-the-workshop">About the workshop</h2>
+<p>This 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the <a href="https://www.tidyverse.org/">tidyverse</a>, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.</p>
 <p>The event is free and will be held virtually over Zoom, though registration is required!</p>
 <p><img src="images/image.png" class="img-fluid"></p>
 <section id="technical-details" class="level3">
 <h3 class="anchored" data-anchor-id="technical-details">Technical details</h3>
-<p>You are free to “code along” throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won’t be time for individual troubleshooting.</p>
+<p>For those attending: you are free to “code along” throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won’t be time for individual troubleshooting.</p>
 <p>If you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with <code>install.packages("tidyverse")</code>.</p>
 </section>
 <section id="website-materials" class="level3">
 <h3 class="anchored" data-anchor-id="website-materials">Website materials</h3>
-<p>The materials on this website are designed as a companion for the live workshop, not as a comprehensive guide to the entire tidyverse. All the code is here, along with some background on the concepts discussed, but the details are more fleshed out in the workshop itself. The workshop slides are linked above.</p>
-<p>The code is interspersed throughout, but the full <code>code.R</code> file is available at the link above.</p>
+<p>The materials on this website are designed as a companion for the live workshop, not as a comprehensive guide to the entire tidyverse. All the code is here, along with some background on the concepts discussed. The workshop slides are linked above.</p>
+<p>The code is interspersed throughout this page, but the full <code>keeping-it-tidy.R</code> file is available at the link above.</p>
 </section>
 </section>
 <section id="r-and-the-tidyverse" class="level2">
 <h2 class="anchored" data-anchor-id="r-and-the-tidyverse">R and the <code>tidyverse</code></h2>
-<p>R is an open-source (that means free!) scripting language for working with data. It helps make your analysis wonderfully efficient and <span class="emoji" data-emoji="sparkles">✨</span> reproducible <span class="emoji" data-emoji="sparkles">✨</span>, and I would highly recommend it over something like Excel for anything beyond data analysis, especially if you expect to repeat that analysis ever again (which you probably will).</p>
+<p>R is an open-source (that means free!) scripting language for working with data. It helps make your analysis wonderfully efficient and <span class="emoji" data-emoji="sparkles">✨</span> reproducible <span class="emoji" data-emoji="sparkles">✨</span>, and I would highly recommend it over something like Excel for anything beyond very basic data analysis, especially if you expect to repeat that analysis ever again (which you probably will).</p>
 <p>Having a) your data separate from your analysis and b) that analysis codified in a script will help tremendously with reproducibility efforts. That makes it easier for anyone else (including yourself in three months once you have forgotten all the details you swore you’d remember) to rerun your code and make edits, deal with updated data, etc.</p>
 <section id="getting-started" class="level3">
 <h3 class="anchored" data-anchor-id="getting-started">Getting started</h3>
@@ -243,12 +243,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="why-the-tidyverse" class="level3">
 <h3 class="anchored" data-anchor-id="why-the-tidyverse">Why the tidyverse?</h3>
-<p>The tidyverse is an opinionated set of packages that work together and are designed for common data science tasks. (By <em>opinionated</em>, I mean that the packages have some thoughts on how your data should be structured. We’ll discuss the concept of <strong>tidy data</strong> later on in this workshop.) The packages are well-maintained and beginner-friendly, plus they cover almost all of what any beginner and/or intermediate user needs in order to get started doing some data analysis.</p>
+<p>The tidyverse is an opinionated set of packages that work together and are designed for common data science tasks. (By <em>opinionated</em>, I mean that the packages have some thoughts on how your data should be structured. We’ll discuss the concept of <strong>tidy data</strong> later on in this workshop.) The packages are well-maintained and beginner-friendly, plus they cover almost all of what any beginner and/or intermediate user needs in order to analyze data.</p>
 <p>You install packages with the command <code>install.packages("tidyverse")</code> (need to do once per R installation on your computer) and then load them with the command <code>library(tidyverse)</code> (need to do every session; it is convention to put all of the necessary packages at the top of your coding script).</p>
 <p>Since the tidyverse is actually a set of packages, the <code>library(tidyverse)</code> command loads nine of them—the eight listed below, in addition to <code>lubridate</code>, which is useful for working with dates (I clearly need to update my packages before I take screenshots!).</p>
-<p><img src="images/packages2.png" class="img-fluid"></p>
-<p>We’ll be focusing on the three packages highlighted above, though there are several more packages within the tidyverse family (shown below). You would need to install and load any of those separately.</p>
-<p><img src="images/packages3.png" class="img-fluid"></p>
+<p><img src="images/packages2.png" class="img-fluid" alt="The packages loaded with the tidyverse: ggplot2, tibble, tidyr, readr, purrr, dplyr, stringr, forcats"></p>
+<p>We’ll be focusing on the three packages highlighted above, though there are several more packages within the tidyverse family (shown below). You would need to load any of those separately.</p>
+<p><img src="images/packages3.png" class="img-fluid" alt="List of other optional tidyverse packages, including broom, rvest"></p>
 <section id="common-dplyr-verbs" class="level4">
 <h4 class="anchored" data-anchor-id="common-dplyr-verbs">Common <code>dplyr</code> verbs</h4>
 <p><code>dplyr</code> is perhaps the most useful tidyverse package, just due to how often you’ll use its common functions for data manipulation.</p>
@@ -272,7 +272,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="workshop-data" class="level2">
 <h2 class="anchored" data-anchor-id="workshop-data">Workshop data</h2>
-<p>The data we’re using for today’s workshop comes from <a href="https://github.com/rfordatascience/tidytuesday">#TidyTuesday</a>, a weekly social data data project based on the tidyverse ecosystem. The GitHub repo hosts many interesting data sets to practice with, and <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md">this particular data set</a> comes from the American Kennel Club.</p>
+<p>The data we’re using for today’s workshop comes from <a href="https://github.com/rfordatascience/tidytuesday">#TidyTuesday</a>, a weekly social data project based on the tidyverse ecosystem. The GitHub repo hosts many interesting data sets to practice with, and <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md">this particular data set</a> comes from the American Kennel Club.</p>
 <p><code>read_csv()</code> from the <code>readr</code> package (loaded as part of the tidyverse!) imports data of multiple file formats, and the two data sets for this workshop can be read in directly from this website’s GitHub repo.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -516,7 +516,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <section id="filter" class="level3">
 <h3 class="anchored" data-anchor-id="filter"><code>filter()</code></h3>
 <p>To investigate this further, we can use the <code>filter()</code> function, which keeps or discards observations (rows). Here, the function argument says that we want to keep all records with a <code>shedding_level</code> value of zero (and we know from our <code>count()</code> output above that there should be only one such observation). I’m also adding the <code>select()</code> function (which keeps or discards columns) to keep only our columns of interest.</p>
-<p>You can see how, thanks to the pipe <code>|&gt;</code>, we start with our <code>breed_traits</code> data set, apply the <code>filter()</code> function with that input, apply the <code>select()</code> function to the given output, and then the results would be shown in the console.</p>
+<p>%hanks to the pipe <code>|&gt;</code>, we start with our <code>breed_traits</code> data set, apply the <code>filter()</code> function with that input, apply the <code>select()</code> function to the given output, and then the results would be shown in the console.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>breed_traits <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(shedding_level <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
@@ -723,7 +723,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For all of the plots in this workshop, I have included code for the most basic, out-of-the-box version as well as code to make a more custom plot (toggle to the custom tab to see it). The former can be useful whenever you’re a) learning and/or b) visualizing data for personal data exploration purposes, but if you’re looking to present your plots in any way, you’ll likely want to make some customizations. Thankfully, <code>ggplot</code> makes that possible! I use a special theme for the custom plots, the code for which is available below.</p>
+<p>For all of the plots in this workshop, I have included code for the most basic, out-of-the-box version as well as code to make a more custom plot (toggle to the custom tab to see it). The former can be useful whenever you’re a) learning and/or b) visualizing data for personal data exploration purposes. But if you’re looking to present your plots in any way, you’ll likely want to make some customizations. Thankfully, <code>ggplot</code> makes that possible! I use a special theme for the custom plots, the code for which is available below.</p>
 </div>
 </div>
 <div class="cell">
@@ -819,7 +819,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <p>When you’re working with <code>ggplot</code> and its related functions, you need to pipe lines together with <code>+</code> instead of <code>|&gt;</code>. Sometimes you will forget (I still do, and I’ve been using <code>ggplot</code> for years <span class="emoji" data-emoji="shrug">🤷</span>), but the error message you get is helpful.</p>
 </div>
 </div>
-<p>The code for the bar chart below starts with the name of our data frame: <code>untidy_dogs</code>. The <code>ggplot</code> function starts things off by mapping elements to our <strong>aes</strong>thetic attributes. Here we just have <code>x</code> and <code>y</code>, but you’ll see more later. We only have two variables in this data set, so <code>untidy_score</code> will go on the x-axis and <code>breed</code> will go on the y.</p>
+<p>The code for the bar chart below starts with the name of our data frame: <code>untidy_dogs</code>. The <code>ggplot</code> function starts things off by mapping elements to the <strong>aes</strong>thetic attributes. Here we just have <code>x</code> and <code>y</code>, but you’ll see more later. We only have two variables in this data set, so <code>untidy_score</code> will go on the x-axis and <code>breed</code> will go on the y.</p>
 <p>We specify the <strong>geom</strong>etric points with the following line: <code>geom_bar()</code> signifies a bar chart. The <code>stat = "identity"</code> argument is necessary here to communicate that we want the bar lengths to be determined by the variable that we specified. (The standard bar chart just takes a raw count of your data.)</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Basic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Custom</a></li></ul>
@@ -1059,12 +1059,12 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>There are more pivoting examples <a href="https://r4ds.had.co.nz/tidy-data.html#pivoting">here</a> and <a href="https://dcl-wrangle.stanford.edu/pivot-advanced.html">here</a>.</p>
+<p>There are more advanced pivoting examples <a href="https://r4ds.had.co.nz/tidy-data.html#pivoting">here</a> and <a href="https://dcl-wrangle.stanford.edu/pivot-advanced.html">here</a>.</p>
 </div>
 </div>
 <p>Now that our data is appropriately tidy, we can return to the question from the beginning of this section: how has the popularity ranking of Bernese Mountain Dogs has shifted over time? Since I’m only interested in Bernese Mountain Dogs, and our new <code>ranks_pivoted</code> data frame contains all the breeds, the code below starts with a <code>filter()</code> statement.</p>
-<p>I could use <code>filter(breed == "Bernese Mountain Dogs")</code>, but perhaps you don’t want to type all that out. The <code>stringr</code> package (part of the tidyverse) has many functions for dealing with string (text) data, and <code>str_detect()</code> is among the most useful. It returns <code>TRUE</code> or <code>FALSE</code> as to whether the variable you select (the first argument of the function) contains the string you provide (the second argument of the function). This function within a function will <code>filter</code> to only the observations for which our <code>str_detect</code> expression is <code>TRUE</code>.</p>
-<p>Our <code>ggplot</code> function assigns <code>year</code> to the x-axis and <code>rank</code> to the <code>y-axis</code>. I’ve also added <code>label = rank</code> to indicate that I also want my <code>rank</code> variable to determine the label. Instead of adding a <code>geom_bar()</code> label like last time, here we’ve added a <code>geom_point</code> layer for dots as well as a <code>geom_text</code> layer to add a label. The <code>vjust</code> argument within that function specifies the desired vertical justification for the labels.</p>
+<p>I could use <code>filter(breed == "Bernese Mountain Dogs")</code>, but perhaps you don’t want to type all that out. The <code>stringr</code> <a href="https://stringr.tidyverse.org/">package</a> (part of the core tidyverse) has many functions for dealing with string (text) data, and <code>str_detect()</code> is among the most useful. It returns <code>TRUE</code> or <code>FALSE</code> as to whether the variable you select (the first argument of the function) contains the string you provide (the second argument of the function). This function within a function will <code>filter</code> to only the observations for which our <code>str_detect</code> expression is <code>TRUE</code>.</p>
+<p>Our <code>ggplot</code> function assigns <code>year</code> to the x-axis and <code>rank</code> to the <code>y-axis</code>. I’ve also added <code>label = rank</code> to indicate that I also want my <code>rank</code> variable to determine the label. Instead of adding a <code>geom_bar</code> label like last time, here we’ve added a <code>geom_point</code> layer for dots as well as a <code>geom_text</code> layer to add a label. The <code>vjust</code> argument within that function specifies the desired vertical justification for the labels to place them below the dots.</p>
 </section>
 </section>
 <section id="dot-plot" class="level2">
@@ -1119,7 +1119,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </section>
 <section id="line-graph" class="level2">
 <h2 class="anchored" data-anchor-id="line-graph">Line graph</h2>
-<p>In the previous section we plotted the ranking over time for the Bernese Mountain Dogs. Can we do the same for the six untidiest dogs we identified previously in the <code>untidy_dogs</code> data set?</p>
+<p>In the previous section we plotted the ranking over time for the Bernese Mountain Dogs. Can we do the same for all six of the untidiest dogs we identified previously in the <code>untidy_dogs</code> data set?</p>
 <p>These are the two data sets we have:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1224,7 +1224,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 <p>The data we want to plot (the rankings by year) is in the <code>ranks_pivoted</code> data set, but that holds all the dog breeds and we only want to include the six breeds we have in the <code>untidy_dogs</code> data set.</p>
-<p>Thankfully, you can also use the <code>filter()</code> function to filter across data sets! The code below creates a new data set <code>untidy_popularity</code> based on the <code>ranks_pivoted</code> data set that keeps only the observations for which the <code>breed</code> is included among the list of <code>breed</code>s within the <code>untidy_dogs</code> data set. There are two more common operators used here: <code>%in%</code> allows for multiple options within a list, and <code>$</code> refers to a specific variable within another data set.</p>
+<p>Thankfully, you can also use the <code>filter()</code> function to filter <em>across</em> data sets! The code below creates a new data set <code>untidy_popularity</code> based on the <code>ranks_pivoted</code> data set that keeps only the observations for which the <code>breed</code> is included among the list of <code>breed</code>s within the <code>untidy_dogs</code> data set. There are two more common operators used here: <code>%in%</code> allows for multiple options within a list, and <code>$</code> refers to a specific variable within another data set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>untidy_popularity <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(breed <span class="sc">%in%</span> untidy_dogs<span class="sc">$</span>breed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1290,7 +1290,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
-<p>We can create a line graph off of this <code>untidy_popularity</code> data set using the <code>geom_line()</code> function. (I’ve also included a <code>geom_point</code> layer to add points to those lines.) The <code>year</code> variable is on the x-axis with <code>rank</code> on the y-axis, similar to what we’ve used before, but in order to get multiple lines for the multiple breeds, I’ve added the <code>breed</code> variable onto both the <code>group</code> and <code>color</code> aesthetics. This will group the data points by breed and also create a color legend.</p>
+<p>We can create a line graph off of this <code>untidy_popularity</code> data set with a <code>geom_line</code> layer. (I’ve also included a <code>geom_point</code> layer to add points to those lines.) The <code>year</code> variable is on the x-axis with <code>rank</code> on the y-axis, similar to what we’ve used before, but in order to get multiple lines for the multiple breeds, I’ve added the <code>breed</code> variable onto both the <code>group</code> and <code>color</code> aesthetics. This will group the data points by breed and also create a color legend.</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Basic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Custom</a></li></ul>
 <div class="tab-content">
@@ -1353,7 +1353,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <section id="relational-data" class="level2">
 <h2 class="anchored" data-anchor-id="relational-data">Relational data</h2>
 <p>We have data on the <code>untidy_scores</code> for each breed as well as their popularity over time—can we create a scatter plot of the <em>average</em> popularity ranking against the <code>untidy_scores</code> for all breeds?</p>
-<p>We already have the <code>untidy_scores</code>, so let’s focus on finding the average popularity ranking. Our <code>ranks_pivoted</code> data set holds that information in a tidy way, but there is one observation per year and we need to find the average per breed.</p>
+<p>We already have the <code>untidy_scores</code>, so let’s focus on finding the average popularity ranking. Our <code>ranks_pivoted</code> data set holds that information in a tidy way, but there is one observation per year per breed and we need to find the overall average per breed.</p>
 <p>The <code>group_by()</code>/<code>summarize()</code> combination of <code>dplyr</code> functions allows you to calculate aggregations by a specified group (or multiple!). Here, the code below groups by <code>breed</code> and creates a new variable, <code>avg_rank</code>, within a <code>summarize()</code> function by taking the mean of the existing <code>rank</code> variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>avg_ranks <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
@@ -1564,7 +1564,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </div>
 </div>
 </div>
-<p>Relational data—multiple tables of data that share one or more common elements—is extremely common, and it’s worth becoming familiar with the tidyverse functions that allow you to join data tables.</p>
+<p>Relational data—tables of data that share one or more common elements—is extremely common, and it’s worth becoming familiar with the tidyverse functions that allow you to join data tables.</p>
 <p>To solve this particular question, we’ll use <code>left_join()</code>, which is a type of <em>mutating</em> join: it matches up observations across tables and moves variables from one to another.</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -1871,8 +1871,8 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <p>The last option <span class="emoji" data-emoji="point_up">☝️</span> is the most <em>robust</em>, meaning that it would still deliver the intended result if, say, you got an updated version of this data set with more years of data.</p>
 <section id="pivot_wider" class="level3">
 <h3 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider()</code></h3>
-<p>The code below creates a new data set <code>rank_change</code> from <code>ranks_pivoted</code> with five different functions applied. After the <code>filter()</code> we discussed above, we would be left with two observations per breed, one for 2013 and 2020. But the desired structure for the dumbbell plot would have <em>one</em> observation per breed so 2013 and 2020 could be plotted separately. That means it’s time to pivot again—but this time in the <em>opposite</em> direction with <code>pivot_wider()</code> instead of <code>pivot_longer()</code>.</p>
-<p>This <code>pivot_wider()</code> function has two arguments, to determine where the variable names come from and where the values are from. <code>mutate()</code> will give us a new <code>change</code> variable that calculates the difference, and we’ll <code>filter</code> to only those breeds that are ranked within the top 50 in 2020. And lastly, another application of <code>slice_max()</code> will result in the top six breeds with the highest values of <code>change</code>.</p>
+<p>The code below creates a new data set <code>rank_change</code> from <code>ranks_pivoted</code> with five different functions applied. After the <code>filter()</code> we discussed above, we would be left with two observations per breed, one for 2013 and 2020. But the desired structure for the dumbbell plot would have <em>one</em> observation per breed so that the 2013 and 2020 ranks could be plotted separately. That means it’s time to pivot again—but this time in the <em>opposite</em> direction with <code>pivot_wider()</code> instead of <code>pivot_longer()</code>.</p>
+<p>This <code>pivot_wider()</code> function has two arguments to determine where the variable names come from and where the values are from (<code>year</code> and <code>rank</code>, respectively). <code>mutate()</code> will give us a new <code>change</code> variable that calculates the difference, and we’ll <code>filter</code> to only those breeds that were ranked within the top 50 in 2020. And lastly, another application of <code>slice_max()</code> will result in the top six breeds with the highest values of <code>change</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>rank_change <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span>  </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="fu">min</span>(year) <span class="sc">|</span> year <span class="sc">==</span> <span class="fu">max</span>(year)) <span class="sc">|&gt;</span> </span>
@@ -1953,7 +1953,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 <p>To be honest, it’s easier to make dumbbell plots with <code>ggalt::geom_dumbbell()</code>. But we can use <code>ggplot</code> to learn a) how to combine multiple geoms and b) how inherited <code>aes</code> works.</p>
 </div>
 </div>
-<p>We can build these in <code>ggplot</code> by adding multiple <code>geom_</code> layers. The first <code>ggplot()</code> function will contain only the mapped aesthetics that apply to <em>all</em> the <code>geom_</code> layers. Here, that’s only <code>breed</code> on the y-axis. Each of the <code>geom_</code> layers can have their own aesthetics, as well. One <code>geom_point</code> maps the <code>2013</code> variable, another maps the <code>2020</code> variable, and a <code>geom_segment</code> layer creates the horizontal line that connects the two dots.</p>
+<p>We can build these in <code>ggplot</code> by adding multiple <code>geom_</code> layers. The first <code>ggplot()</code> function will contain only the mapped aesthetics that apply to <em>all</em> the <code>geom_</code> layers. Here, that’s only <code>breed</code> on the y-axis. Individual <code>geom_</code> layers can also have their own aesthetics, in addition to what’s inherited from the initial <code>ggplot(aes())</code>, as you can see below. One <code>geom_point</code> maps the <code>2013</code> variable, another maps the <code>2020</code> variable, and a <code>geom_segment</code> layer creates the horizontal line that connects the two dots.</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Basic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Custom</a></li></ul>
 <div class="tab-content">
@@ -2018,7 +2018,7 @@ Note! <span class="emoji" data-emoji="rotating_light">🚨</span>
 </section>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
-<p>I hope this workshop has been a helpful introduction to the tidyverse. (If you found it useful and/or you think someone <em>else</em> would find it useful, I’d appreciate a Twitter share—I’m <a href="https://twitter.com/meghanmhall"><span class="citation" data-cites="MeghanMHall">@MeghanMHall</span></a>!) But this intro just scratches the surface! It is a very powerful set of packages that can help you solve lots of problems. These are some of my favorite resources:</p>
+<p>I hope this workshop has been a helpful introduction to the tidyverse. (If you found it useful and/or you think someone <em>else</em> would find it useful, I’d appreciate a Twitter share—I’m <a href="https://twitter.com/meghanmhall"><span class="citation" data-cites="MeghanMHall">@MeghanMHall</span></a>!) But this intro just scratches the surface of the tidyverse, which is a very powerful set of packages that can help you solve lots of problems. These are some of my favorite resources to learn more:</p>
 <ul>
 <li><p><a href="https://r4ds.had.co.nz/"><strong>R for Data Science</strong></a></p></li>
 <li><p><a href="https://rstudio-conf-2020.github.io/r-for-excel/"><strong>R for Excel users</strong></a></p></li>

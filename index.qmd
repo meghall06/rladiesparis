@@ -9,11 +9,11 @@ execute:
   warning: false
 ---
 
-<a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary">**Register now**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Workshop slides**</a> <a href="https://meghan.rbind.io/talk/rladiesparis/" class="btn btn-primary">**Code file**</a>
+<a href="https://www.meetup.com/rladies-paris/events/287856868/" class="btn btn-primary">**Register now**</a> <a href="https://meghan.rbind.io/slides/rladiesparis/rladiesparis.html#/title-slide" class="btn btn-primary">**Workshop slides**</a> <a href="https://github.com/meghall06/rladiesparis/blob/master/keeping-it-tidy.R" class="btn btn-primary">**Code file**</a>
 
 ## About the workshop
 
-This 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
+This 90-minute workshop is targeted toward beginners/advanced beginners and will serve as an introduction to the [tidyverse](https://www.tidyverse.org/), a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
 
 The event is free and will be held virtually over Zoom, though registration is required!
 
@@ -21,19 +21,19 @@ The event is free and will be held virtually over Zoom, though registration is r
 
 ### Technical details
 
-You are free to "code along" throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won't be time for individual troubleshooting.
+For those attending: you are free to "code along" throughout the workshop, using the details in the slides and on this page, but you do not have to! All the materials are publicly available, so feel free to just watch and go through the code at your own pace at a later date. Unfortunately, due to time and other logistical constraints of this workshop, there won't be time for individual troubleshooting.
 
 If you would like to be prepared to code along, please have R and RStudio installed on your computer and make sure that the tidyverse is installed with `install.packages("tidyverse")`.
 
 ### Website materials
 
-The materials on this website are designed as a companion for the live workshop, not as a comprehensive guide to the entire tidyverse. All the code is here, along with some background on the concepts discussed, but the details are more fleshed out in the workshop itself. The workshop slides are linked above.
+The materials on this website are designed as a companion for the live workshop, not as a comprehensive guide to the entire tidyverse. All the code is here, along with some background on the concepts discussed. The workshop slides are linked above.
 
-The code is interspersed throughout, but the full `code.R` file is available at the link above.
+The code is interspersed throughout this page, but the full `keeping-it-tidy.R` file is available at the link above.
 
 ## R and the `tidyverse`
 
-R is an open-source (that means free!) scripting language for working with data. It helps make your analysis wonderfully efficient and :sparkles: reproducible :sparkles:, and I would highly recommend it over something like Excel for anything beyond data analysis, especially if you expect to repeat that analysis ever again (which you probably will). 
+R is an open-source (that means free!) scripting language for working with data. It helps make your analysis wonderfully efficient and :sparkles: reproducible :sparkles:, and I would highly recommend it over something like Excel for anything beyond very basic data analysis, especially if you expect to repeat that analysis ever again (which you probably will). 
 
 Having a) your data separate from your analysis and b) that analysis codified in a script will help tremendously with reproducibility efforts. That makes it easier for anyone else (including yourself in three months once you have forgotten all the details you swore you'd remember) to rerun your code and make edits, deal with updated data, etc.
 
@@ -47,17 +47,17 @@ You use R via *packages*, which hold *functions*, which are just *verbs*. `filte
 
 ### Why the tidyverse?
 
-The tidyverse is an opinionated set of packages that work together and are designed for common data science tasks. (By *opinionated*, I mean that the packages have some thoughts on how your data should be structured. We'll discuss the concept of **tidy data** later on in this workshop.) The packages are well-maintained and beginner-friendly, plus they cover almost all of what any beginner and/or intermediate user needs in order to get started doing some data analysis.
+The tidyverse is an opinionated set of packages that work together and are designed for common data science tasks. (By *opinionated*, I mean that the packages have some thoughts on how your data should be structured. We'll discuss the concept of **tidy data** later on in this workshop.) The packages are well-maintained and beginner-friendly, plus they cover almost all of what any beginner and/or intermediate user needs in order to analyze data.
 
 You install packages with the command `install.packages("tidyverse")` (need to do once per R installation on your computer) and then load them with the command `library(tidyverse)` (need to do every session; it is convention to put all of the necessary packages at the top of your coding script).
 
 Since the tidyverse is actually a set of packages, the `library(tidyverse)` command loads nine of them---the eight listed below, in addition to `lubridate`, which is useful for working with dates (I clearly need to update my packages before I take screenshots!).
 
-![](images/packages2.png)
+![](images/packages2.png){fig-alt="The packages loaded with the tidyverse: ggplot2, tibble, tidyr, readr, purrr, dplyr, stringr, forcats"}
 
-We'll be focusing on the three packages highlighted above, though there are several more packages within the tidyverse family (shown below). You would need to install and load any of those separately.
+We'll be focusing on the three packages highlighted above, though there are several more packages within the tidyverse family (shown below). You would need to load any of those separately.
 
-![](images/packages3.png)
+![](images/packages3.png){fig-alt="List of other optional tidyverse packages, including broom, rvest"}
 
 #### Common `dplyr` verbs
 
@@ -82,7 +82,7 @@ You might also be familiar with `%>%`, which is the original pipe that was nativ
 
 ## Workshop data
 
-The data we're using for today's workshop comes from [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly social data data project based on the tidyverse ecosystem. The GitHub repo hosts many interesting data sets to practice with, and [this particular data set](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md) comes from the American Kennel Club.
+The data we're using for today's workshop comes from [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly social data project based on the tidyverse ecosystem. The GitHub repo hosts many interesting data sets to practice with, and [this particular data set](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md) comes from the American Kennel Club.
 
 `read_csv()` from the `readr` package (loaded as part of the tidyverse!) imports data of multiple file formats, and the two data sets for this workshop can be read in directly from this website's GitHub repo.
 
@@ -176,7 +176,7 @@ knitr::kable(breed_traits |> count(shedding_level)) |>
 
 To investigate this further, we can use the `filter()` function, which keeps or discards observations (rows). Here, the function argument says that we want to keep all records with a `shedding_level` value of zero (and we know from our `count()` output above that there should be only one such observation). I'm also adding the `select()` function (which keeps or discards columns) to keep only our columns of interest.
 
-You can see how, thanks to the pipe `|>`, we start with our `breed_traits` data set, apply the `filter()` function with that input, apply the `select()` function to the given output, and then the results would be shown in the console.
+%hanks to the pipe `|>`, we start with our `breed_traits` data set, apply the `filter()` function with that input, apply the `select()` function to the given output, and then the results would be shown in the console.
 
 ```{r filter-1}
 #| eval: false
@@ -271,7 +271,7 @@ knitr::kable(untidy_scores |> arrange(desc(untidy_score)) |> head(6)) |> kableEx
 
 :::{.callout-note icon="false"}
 ## Note! :rotating_light:
-For all of the plots in this workshop, I have included code for the most basic, out-of-the-box version as well as code to make a more custom plot (toggle to the custom tab to see it). The former can be useful whenever you're a) learning and/or b) visualizing data for personal data exploration purposes, but if you're looking to present your plots in any way, you'll likely want to make some customizations. Thankfully, `ggplot` makes that possible! I use a special theme for the custom plots, the code for which is available below.
+For all of the plots in this workshop, I have included code for the most basic, out-of-the-box version as well as code to make a more custom plot (toggle to the custom tab to see it). The former can be useful whenever you're a) learning and/or b) visualizing data for personal data exploration purposes. But if you're looking to present your plots in any way, you'll likely want to make some customizations. Thankfully, `ggplot` makes that possible! I use a special theme for the custom plots, the code for which is available below.
 :::
 
 ```{r theme}
@@ -331,7 +331,7 @@ knitr::kable(untidy_dogs) |> kableExtra::kable_styling(full_width = FALSE)
 When you're working with `ggplot` and its related functions, you need to pipe lines together with `+` instead of `|>`. Sometimes you will forget (I still do, and I've been using `ggplot` for years :shrug:), but the error message you get is helpful.
 :::
 
-The code for the bar chart below starts with the name of our data frame: `untidy_dogs`. The `ggplot` function starts things off by mapping elements to our **aes**thetic attributes. Here we just have `x` and `y`, but you'll see more later. We only have two variables in this data set, so `untidy_score` will go on the x-axis and `breed` will go on the y. 
+The code for the bar chart below starts with the name of our data frame: `untidy_dogs`. The `ggplot` function starts things off by mapping elements to the **aes**thetic attributes. Here we just have `x` and `y`, but you'll see more later. We only have two variables in this data set, so `untidy_score` will go on the x-axis and `breed` will go on the y. 
 
 We specify the **geom**etric points with the following line: `geom_bar()` signifies a bar chart. The `stat = "identity"` argument is necessary here to communicate that we want the bar lengths to be determined by the variable that we specified. (The standard bar chart just takes a raw count of your data.)
 
@@ -437,14 +437,14 @@ knitr::kable(ranks_pivoted |> filter(str_detect(breed, "Bernese"))) |>
 
 :::{.callout-note icon="false"}
 ## Note! :rotating_light:
-There are more pivoting examples [here](https://r4ds.had.co.nz/tidy-data.html#pivoting) and [here](https://dcl-wrangle.stanford.edu/pivot-advanced.html).
+There are more advanced pivoting examples [here](https://r4ds.had.co.nz/tidy-data.html#pivoting) and [here](https://dcl-wrangle.stanford.edu/pivot-advanced.html).
 :::
 
 Now that our data is appropriately tidy, we can return to the question from the beginning of this section: how has the popularity ranking of Bernese Mountain Dogs has shifted over time? Since I'm only interested in Bernese Mountain Dogs, and our new `ranks_pivoted` data frame contains all the breeds, the code below starts with a `filter()` statement. 
 
-I could use `filter(breed == "Bernese Mountain Dogs")`, but perhaps you don't want to type all that out. The `stringr` package (part of the tidyverse) has many functions for dealing with string (text) data, and `str_detect()` is among the most useful. It returns `TRUE` or `FALSE` as to whether the variable you select (the first argument of the function) contains the string you provide (the second argument of the function). This function within a function will `filter` to only the observations for which our `str_detect` expression is `TRUE`.
+I could use `filter(breed == "Bernese Mountain Dogs")`, but perhaps you don't want to type all that out. The `stringr` [package](https://stringr.tidyverse.org/) (part of the core tidyverse) has many functions for dealing with string (text) data, and `str_detect()` is among the most useful. It returns `TRUE` or `FALSE` as to whether the variable you select (the first argument of the function) contains the string you provide (the second argument of the function). This function within a function will `filter` to only the observations for which our `str_detect` expression is `TRUE`.
 
-Our `ggplot` function assigns `year` to the x-axis and `rank` to the `y-axis`. I've also added `label = rank` to indicate that I also want my `rank` variable to determine the label. Instead of adding a `geom_bar()` label like last time, here we've added a `geom_point` layer for dots as well as a `geom_text` layer to add a label. The `vjust` argument within that function specifies the desired vertical justification for the labels.
+Our `ggplot` function assigns `year` to the x-axis and `rank` to the `y-axis`. I've also added `label = rank` to indicate that I also want my `rank` variable to determine the label. Instead of adding a `geom_bar` label like last time, here we've added a `geom_point` layer for dots as well as a `geom_text` layer to add a label. The `vjust` argument within that function specifies the desired vertical justification for the labels to place them below the dots.
 
 ## Dot plot
 
@@ -487,7 +487,7 @@ ranks_pivoted |>
 
 ## Line graph
 
-In the previous section we plotted the ranking over time for the Bernese Mountain Dogs. Can we do the same for the six untidiest dogs we identified previously in the `untidy_dogs` data set?
+In the previous section we plotted the ranking over time for the Bernese Mountain Dogs. Can we do the same for all six of the untidiest dogs we identified previously in the `untidy_dogs` data set?
 
 These are the two data sets we have:
 
@@ -521,7 +521,7 @@ knitr::kable(ranks_pivoted |> head(6)) |>
 
 The data we want to plot (the rankings by year) is in the `ranks_pivoted` data set, but that holds all the dog breeds and we only want to include the six breeds we have in the `untidy_dogs` data set.
 
-Thankfully, you can also use the `filter()` function to filter across data sets! The code below creates a new data set `untidy_popularity` based on the `ranks_pivoted` data set that keeps only the observations for which the `breed` is included among the list of `breed`s within the `untidy_dogs` data set. There are two more common operators used here: `%in%` allows for multiple options within a list, and `$` refers to a specific variable within another data set.
+Thankfully, you can also use the `filter()` function to filter *across* data sets! The code below creates a new data set `untidy_popularity` based on the `ranks_pivoted` data set that keeps only the observations for which the `breed` is included among the list of `breed`s within the `untidy_dogs` data set. There are two more common operators used here: `%in%` allows for multiple options within a list, and `$` refers to a specific variable within another data set.
 
 ```{r line-graph}
 untidy_popularity <- ranks_pivoted |> 
@@ -551,7 +551,7 @@ knitr::kable(untidy_popularity |> count(breed)) |>
 ```
 :::
 
-We can create a line graph off of this `untidy_popularity` data set using the `geom_line()` function. (I've also included a `geom_point` layer to add points to those lines.) The `year` variable is on the x-axis with `rank` on the y-axis, similar to what we've used before, but in order to get multiple lines for the multiple breeds, I've added the `breed` variable onto both the `group` and `color` aesthetics. This will group the data points by breed and also create a color legend.
+We can create a line graph off of this `untidy_popularity` data set with a `geom_line` layer. (I've also included a `geom_point` layer to add points to those lines.) The `year` variable is on the x-axis with `rank` on the y-axis, similar to what we've used before, but in order to get multiple lines for the multiple breeds, I've added the `breed` variable onto both the `group` and `color` aesthetics. This will group the data points by breed and also create a color legend.
 
 ::: {.panel-tabset}
 
@@ -605,7 +605,7 @@ untidy_popularity |>
 
 We have data on the `untidy_scores` for each breed as well as their popularity over time---can we create a scatter plot of the *average* popularity ranking against the `untidy_scores` for all breeds?
 
-We already have the `untidy_scores`, so let's focus on finding the average popularity ranking. Our `ranks_pivoted` data set holds that information in a tidy way, but there is one observation per year and we need to find the average per breed.
+We already have the `untidy_scores`, so let's focus on finding the average popularity ranking. Our `ranks_pivoted` data set holds that information in a tidy way, but there is one observation per year per breed and we need to find the overall average per breed.
 
 The `group_by()`/`summarize()` combination of `dplyr` functions allows you to calculate aggregations by a specified group (or multiple!). Here, the code below groups by `breed` and creates a new variable, `avg_rank`, within a `summarize()` function by taking the mean of the existing `rank` variable.
 
@@ -673,7 +673,7 @@ knitr::kable(untidy_scores |> head(5)) |>
 :::
 :::
 
-Relational data---multiple tables of data that share one or more common elements---is extremely common, and it's worth becoming familiar with the tidyverse functions that allow you to join data tables.
+Relational data---tables of data that share one or more common elements---is extremely common, and it's worth becoming familiar with the tidyverse functions that allow you to join data tables.
 
 To solve this particular question, we'll use `left_join()`, which is a type of *mutating* join: it matches up observations across tables and moves variables from one to another.
 
@@ -819,9 +819,9 @@ The last option :point_up: is the most *robust*, meaning that it would still del
 
 ### `pivot_wider()`
 
-The code below creates a new data set `rank_change` from `ranks_pivoted` with five different functions applied. After the `filter()` we discussed above, we would be left with two observations per breed, one for 2013 and 2020. But the desired structure for the dumbbell plot would have *one* observation per breed so 2013 and 2020 could be plotted separately. That means it's time to pivot again---but this time in the *opposite* direction with `pivot_wider()` instead of `pivot_longer()`.
+The code below creates a new data set `rank_change` from `ranks_pivoted` with five different functions applied. After the `filter()` we discussed above, we would be left with two observations per breed, one for 2013 and 2020. But the desired structure for the dumbbell plot would have *one* observation per breed so that the 2013 and 2020 ranks could be plotted separately. That means it's time to pivot again---but this time in the *opposite* direction with `pivot_wider()` instead of `pivot_longer()`.
 
-This `pivot_wider()` function has two arguments, to determine where the variable names come from and where the values are from. `mutate()` will give us a new `change` variable that calculates the difference, and we'll `filter` to only those breeds that are ranked within the top 50 in 2020. And lastly, another application of `slice_max()` will result in the top six breeds with the highest values of `change`.
+This `pivot_wider()` function has two arguments to determine where the variable names come from and where the values are from (`year` and `rank`, respectively). `mutate()` will give us a new `change` variable that calculates the difference, and we'll `filter` to only those breeds that were ranked within the top 50 in 2020. And lastly, another application of `slice_max()` will result in the top six breeds with the highest values of `change`.
 
 ```{r pivot-wider}
 rank_change <- ranks_pivoted |>  
@@ -850,7 +850,7 @@ We can plot this data with a dumbbell plot, which are useful for showing the cha
 To be honest, it's easier to make dumbbell plots with `ggalt::geom_dumbbell()`. But we can use `ggplot` to learn a) how to combine multiple geoms and b) how inherited `aes` works.
 :::
 
-We can build these in `ggplot` by adding multiple `geom_` layers. The first `ggplot()` function will contain only the mapped aesthetics that apply to *all* the `geom_` layers. Here, that's only `breed` on the y-axis. Each of the `geom_` layers can have their own aesthetics, as well. One `geom_point` maps the `2013` variable, another maps the `2020` variable, and a `geom_segment` layer creates the horizontal line that connects the two dots.
+We can build these in `ggplot` by adding multiple `geom_` layers. The first `ggplot()` function will contain only the mapped aesthetics that apply to *all* the `geom_` layers. Here, that's only `breed` on the y-axis. Individual `geom_` layers can also have their own aesthetics, in addition to what's inherited from the initial `ggplot(aes())`, as you can see below. One `geom_point` maps the `2013` variable, another maps the `2020` variable, and a `geom_segment` layer creates the horizontal line that connects the two dots.
 
 ::: {.panel-tabset}
 
@@ -904,7 +904,7 @@ rank_change |>
 
 ## Resources
 
-I hope this workshop has been a helpful introduction to the tidyverse. (If you found it useful and/or you think someone *else* would find it useful, I'd appreciate a Twitter share---I'm [@MeghanMHall](https://twitter.com/meghanmhall)!) But this intro just scratches the surface! It is a very powerful set of packages that can help you solve lots of problems. These are some of my favorite resources:
+I hope this workshop has been a helpful introduction to the tidyverse. (If you found it useful and/or you think someone *else* would find it useful, I'd appreciate a Twitter share---I'm [@MeghanMHall](https://twitter.com/meghanmhall)!) But this intro just scratches the surface of the tidyverse, which is a very powerful set of packages that can help you solve lots of problems. These are some of my favorite resources to learn more:
 
 - [**R for Data Science**](https://r4ds.had.co.nz/)
 
